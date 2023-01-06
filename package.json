@@ -13,6 +13,7 @@
         "primeicons": "^6.0.1",
         "primevue": "^3.18.1",
         "vue": "^3.2.41",
+        "vue-axios": "^3.5.2",
         "vue-router": "^4.1.5"
     },
     "devDependencies": {

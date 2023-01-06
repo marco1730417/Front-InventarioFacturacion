@@ -2,7 +2,7 @@
 import { onMounted, reactive, ref, watch } from 'vue';
 import ProductService from '@/service/ProductService';
 import { useLayout } from '@/layout/composables/layout';
-
+const token = localStorage.getItem("token");
 const { isDarkTheme, contextPath } = useLayout();
 
 const products = ref(null);
@@ -120,7 +120,7 @@ watch(
             <div class="card mb-0">
                 <div class="flex justify-content-between mb-3">
                     <div>
-                        <span class="block text-500 font-medium mb-3">Orders</span>
+                        <span class="block text-500 font-medium mb-3">Orders <!-- {{ token }}  --></span>
                         <div class="text-900 font-medium text-xl">152</div>
                     </div>
                     <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width: 2.5rem; height: 2.5rem">

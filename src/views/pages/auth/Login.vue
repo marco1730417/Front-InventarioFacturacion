@@ -1,6 +1,8 @@
-<script setup>
+<!-- <script setup>
 import { useLayout } from '@/layout/composables/layout';
 import { ref, computed } from 'vue';
+
+import axios from 'axios';
 import AppConfig from '@/layout/AppConfig.vue';
 
 const { layoutConfig, contextPath } = useLayout();
@@ -11,8 +13,37 @@ const checked = ref(false);
 const logoUrl = computed(() => {
     return `${contextPath}layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`;
 });
-</script>
+</script> -->
+<script>
+import { ref } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
 
+export default {
+  name: 'Login',
+  setup() {
+    const email = ref('');
+    const password = ref('');
+    const router = useRouter();
+
+    const submit = async () => {
+      const response = await axios.post('/login', {
+        email: email.value,
+        password: password.value,
+      });
+      localStorage.setItem('token', response.data.token);
+      await 
+    router.push('/');
+    };
+
+    return {
+      email,
+      password,
+      submit,
+    };
+  },
+};
+</script>
 <template>
     <div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
         <div class="flex flex-column align-items-center justify-content-center">
@@ -24,13 +55,14 @@ const logoUrl = computed(() => {
                         <div class="text-900 text-3xl font-medium mb-3">Welcome!</div>
                         <span class="text-600 font-medium">Sign in to continue</span>
                     </div>
-
+                    <form class="space-y-4" @submit.prevent="submit">
+      
                     <div>
-                        <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
-                        <InputText id="email1" type="text" placeholder="Email address" class="w-full md:w-30rem mb-5" style="padding: 1rem" v-model="email" />
+                        <label for="email" class="block text-900 text-xl font-medium mb-2">Email</label>
+                        <InputText id="email" type="text" placeholder="Email address" class="w-full md:w-30rem mb-5" style="padding: 1rem" v-model="email" />
 
-                        <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
-                        <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" inputStyle="padding:1rem"></Password>
+                        <label for="password" class="block text-900 font-medium text-xl mb-2">Password</label>
+                        <Password id="password" v-model="password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" inputStyle="padding:1rem"></Password>
 
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <div class="flex align-items-center">
@@ -39,8 +71,9 @@ const logoUrl = computed(() => {
                             </div>
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a>
                         </div>
-                        <Button label="Sign In" class="w-full p-3 text-xl"></Button>
+                        <Button type="submit" label="Sign In" class="w-full p-3 text-xl"></Button>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
