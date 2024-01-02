@@ -1,9 +1,15 @@
-import { createApp } from 'vue';
-
-import axios from 'axios'
-axios.defaults.baseURL = 'http://localhost:8000/api/user';
+import { createApp,markRaw } from 'vue';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+/* 
+import axios from 'axios' */
+/* axios.defaults.baseURL = 'http://localhost:8000/api/user';
 axios.defaults.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-
+ */
+import { createPinia } from "pinia";
+const pinia = createPinia();
+pinia.use(({ store }) => {
+    store.router = markRaw(router)
+    })
 
 import App from './App.vue';
 import router from './router';
@@ -111,8 +117,8 @@ import BlockViewer from '@/components/BlockViewer.vue';
 
 import '@/assets/styles.scss';
 
-const app = createApp(App);
-
+const app = createApp(App).use(pinia);
+pinia.use(piniaPluginPersistedstate)
 app.use(router);
 app.use(PrimeVue, { ripple: true });
 app.use(ToastService);

@@ -1,23 +1,12 @@
-<!-- <script setup>
-import { useLayout } from '@/layout/composables/layout';
-import { ref, computed } from 'vue';
 
-import axios from 'axios';
-import AppConfig from '@/layout/AppConfig.vue';
-
-const { layoutConfig, contextPath } = useLayout();
-const email = ref('');
-const password = ref('');
-const checked = ref(false);
-
-const logoUrl = computed(() => {
-    return `${contextPath}layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`;
-});
-</script> -->
 <script>
 import { ref } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+
+import { useUserStore } from '@/store/user.js';
+
+const authStore = useUserStore();
 
 export default {
   name: 'Login',
@@ -26,7 +15,7 @@ export default {
     const password = ref('');
     const router = useRouter();
 
-    const submit = async () => {
+    const submit1 = async () => {
       const response = await axios.post('/login', {
         email: email.value,
         password: password.value,
@@ -34,6 +23,15 @@ export default {
       localStorage.setItem('token', response.data.token);
       await 
     router.push('/');
+    };
+
+    const submit = async () => {
+        let data = {
+            email: email.value,
+        password: password.value,
+    }
+    
+ await authStore.login(data);
     };
 
     return {

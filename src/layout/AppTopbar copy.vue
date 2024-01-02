@@ -2,48 +2,16 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
-import { useUserStore } from '@/store/user.js';
-const authStore = useUserStore();
+
 const { layoutConfig, onMenuToggle, contextPath } = useLayout();
 
 const outsideClickListener = ref(null);
 const topbarMenuActive = ref(false);
 const router = useRouter();
-const menu = ref();
-const toggle = (event) => {
-            menu.value.toggle(event);
-           
-        }
-        const items = ref([
-            {
-                label:'Dashboard',
-                icon:'pi pi-fw pi-home',
-                to: '/', 
-            },
-       
-           
-            {
-                separator:true
-            },
-            {
-                label:'Cerrar sesión',
-                icon:'pi pi-fw pi-power-off',
-                command: () => logout()
-          
-            }
-        ]);
 
 onMounted(() => {
     bindOutsideClickListener();
 });
-
-const logout = async () => {
-    let data = {
-        id: authStore.user.id,
-    }
-    await authStore.logout(data);
-    authStore.$reset();
-};
 
 onBeforeUnmount(() => {
     unbindOutsideClickListener();
@@ -108,7 +76,7 @@ const isOutsideClicked = (event) => {
         </button>
 
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
-          <!--   <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
+            <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
                 <i class="pi pi-calendar"></i>
                 <span>Calendar</span>
             </button>
@@ -119,21 +87,7 @@ const isOutsideClicked = (event) => {
             <button @click="onSettingsClick()" class="p-link layout-topbar-button">
                 <i class="pi pi-cog"></i>
                 <span>Settings</span>
-            </button> -->
-
-   <Button severity="secondary" raised icon="pi pi-users" :label="authStore.user.name" @click="toggle" aria-haspopup="true" aria-controls="overlay_tmenu"/>
-   
-           <!--  <button @click="toggle()" class="p-link layout-topbar-button"
-            aria-haspopup="true" aria-controls="overlay_tmenu"
-            >
-                <i class="pi pi-users"></i>
-                <span>{{authStore.user.name}}</span>
-            </button> -->
-
-    <TieredMenu id="overlay_tmenu" ref="menu" :model="items" :popup="true" />
-
-
-
+            </button>
         </div>
     </div>
 </template>

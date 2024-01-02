@@ -1,5 +1,10 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import AppLayout from '@/layout/AppLayout.vue';
+import { Role } from '@/router/_helpers.js';
+import axios from 'axios'
+
+import { useUserStore } from '@/store/user.js';
+
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -46,8 +51,18 @@ const router = createRouter({
                 {
                     path: '/facturacion/clientes',
                     name: 'table',
+                    
+                    meta: { authorize: Role.SuperAdministrador},
                     component: () => import('@/views/facturacion/Clientes.vue')
                 },
+                {
+                    path: '/facturacion/usuarios',
+                    name: 'tableusuarios',
+                    
+                    meta: { authorize: Role.SuperAdministrador},
+                    component: () => import('@/views/usuarios/Usuarios.vue')
+                },
+                
                 {
                     path: '/uikit/list',
                     name: 'list',
@@ -175,6 +190,60 @@ const router = createRouter({
             component: () => import('@/views/pages/auth/Error.vue')
         }
     ]
+});
+
+
+
+function parseJwt (tok) {
+    var base64Url = tok.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+
+
+router.beforeEach(async (to) => {
+    const  authorize  = to.meta
+    // Paginas que no necesitan un token. entonces es necesario que se pueda ingresar normalmente 
+   const publicPages = ['login', 'access', 'error'];
+   const authRequired = !publicPages.includes(to.name);
+ 
+   const auth = useUserStore();
+
+
+   if (authRequired && !auth.token    ) {
+        return '/auth/login';
+    }
+
+
+    // Validacion de roles para pantalla 
+    if(authorize.authorize>0) {
+    if (authRequired && authorize.authorize != auth.user.perfil ) {
+        return '/auth/access';
+    } }
+
+    const token = auth.token;
+
+    //Validacion tiempo de token
+    if (token) {
+        const jwtPayload = parseJwt(token);
+    /*     console.log(jwtPayload.exp);
+        console.log(Date.now()/1000); */
+        
+        if (jwtPayload.exp < Date.now()/1000) {
+            auth.$reset();
+            return '/auth/login';
+        }
+      } 
+      //Aqui cargamos los datos para el token debido a que en el main.js daba problemas,
+
+        axios.defaults.headers['Authorization'] = `Bearer ${token}`; 
+        axios.defaults.baseURL = import.meta.env.VITE_APP_BACK_BASE+'api/';
+
+
 });
 
 export default router;

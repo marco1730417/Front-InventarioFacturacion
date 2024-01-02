@@ -4,12 +4,12 @@ import { ref, onMounted, onBeforeMount } from 'vue';
 import { useRestApi } from '@/composables/crud';
 
 const { obtenerRegistros, editarRegistro,  datos,guardarRegistro, eliminarRegistro } = useRestApi() //Instancia composable Rest
-const url = ref('clientes');
+const url = ref('usuarios');
 
 
 const modalRegistro = ref(false);
 const modalBorrarRegistro = ref(false);
-const cliente = ref({});
+const usuario = ref({});
 const dt = ref(null);
 const filters = ref({});
 const submitted = ref(false);
@@ -25,7 +25,7 @@ onMounted(() => {
 
 
 const nuevoRegistro = () => {
-    cliente.value = {};
+    usuario.value = {};
     submitted.value = false;
     modalRegistro.value = true;
 };
@@ -37,34 +37,34 @@ const ocultarModal = () => {
 
 const guardareditarRegistro = () => {
     submitted.value = true;
-    if (cliente.value.nombre && cliente.value.ruc ) {
-        if (cliente.value.id) {
+    if (usuario.value.name && usuario.value.identificacion ) {
+        if (usuario.value.id) {
             //Edicion
-            editarRegistro(url.value,cliente.value);
+            editarRegistro(url.value,usuario.value);
     
             obtenerRegistros(url.value);    
             
         } else {
 
             //Creacion
-            guardarRegistro(url.value,cliente.value);
+            guardarRegistro(url.value,usuario.value);
        
             obtenerRegistros(url.value);    
             
         }
         modalRegistro.value = false;
-        cliente.value = {};
+        usuario.value = {};
     }
 };
 
 
 const edicionRegistro = (edicionRegistro) => {
-    cliente.value = { ...edicionRegistro };
+    usuario.value = { ...edicionRegistro };
     modalRegistro.value = true;
 };
 
 const confirmarEliminarRegistro = (edicionRegistro) => {
-    cliente.value = edicionRegistro;
+    usuario.value = edicionRegistro;
     modalBorrarRegistro.value = true;
 };
 
@@ -120,7 +120,7 @@ const initFilters = () => {
                 >
                     <template #header>
                         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                            <h5 class="m-0">Administración de Clientes</h5>
+                            <h5 class="m-0">Administración de Usuarios</h5>
                             <span class="block mt-2 md:mt-0 p-input-icon-left">
                                 <i class="pi pi-search" />
                                 <InputText v-model="filters['global'].value" placeholder="Search..." />
@@ -132,26 +132,41 @@ const initFilters = () => {
                  -->    <Column field="nombre" header="NOMBRE" :sortable="true" headerStyle="width:25%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">NOMBRE</span>
-                            {{ slotProps.data.nombre }} <br>
-                            {{ slotProps.data.ruc }}
+                            {{ slotProps.data.name }} 
+                      
                         </template>
                     </Column>
-                    <Column field="ruc" header="EMAIL" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                    <Column field="identificacion" header="EMAIL" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">Email</span>
                             {{ slotProps.data.email }}
                         </template>
                     </Column>
-                    <Column field="direccion" header="DIRECCION" :sortable="true" headerStyle="width:25%; min-width:10rem;">
+                    <Column field="identificacion" header="IDENTIFICACION" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
-                            <span class="p-column-title">DIRECCION</span>
-                            {{ slotProps.data.direccion }}
+                            <span class="p-column-title">IDENTIFICACION</span>
+                            {{ slotProps.data.identificacion }}
                         </template>
                     </Column>
-                    <Column field="telefono" header="TELEFONO" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                    <Column field="sueldo" header="SUELDO" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
-                            <span class="p-column-title">TELEFONO</span>
-                            {{ slotProps.data.telefono }}
+                            <span class="p-column-title">Sueldo</span>
+                            {{ slotProps.data.sueldo }}
+                        </template>
+                    </Column>
+                    <Column field="cargo" header="CARGO" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                        <template #body="slotProps">
+                            <span class="p-column-title">Cargo</span>
+                            {{ slotProps.data.cargo }}
+                        </template>
+                    </Column>
+           
+                    <Column field="sueldo" header="PERFIL" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                        <template #body="slotProps">
+                            <span class="p-column-title">PERFIL</span>
+                         <span v-if="slotProps.data.perfil == 1">Administrador</span>   
+                         
+                         <span v-if="slotProps.data.perfil == 2">Estándar</span>   
                         </template>
                     </Column>
                  
@@ -164,28 +179,32 @@ const initFilters = () => {
                     </Column>
                 </DataTable>
 
-                <Dialog v-model:visible="modalRegistro" :style="{ width: '450px' }" header="Detalles de Registro" :modal="true" class="p-fluid">
+                <Dialog v-model:visible="modalRegistro" :style="{ width: '750px' }" header="Detalles de Registro" :modal="true" class="p-fluid">
                     <div class="field">
                         <label for="name">Nombre</label>
-                        <InputText id="name" v-model.trim="cliente.nombre" required="true" autofocus :class="{ 'p-invalid': submitted && !cliente.nombre }" />
-                        <small class="p-invalid" v-if="submitted && !cliente.nombre">Name is required.</small>
-                    </div>
-                    <div class="field">
-                        <label for="name">Ruc</label>
-                        <InputText id="name" v-model.trim="cliente.ruc" required="true" autofocus :class="{ 'p-invalid': submitted && !cliente.ruc }" />
-                        <small class="p-invalid" v-if="submitted && !cliente.ruc">Name is required.</small>
-                    </div>
-                    <div class="field">
-                        <label for="description">Direccion</label>
-                        <Textarea id="description" v-model="cliente.direccion" required="true" rows="3" cols="20" />
-                    </div>
-                    <div class="field">
-                        <label for="name">Telefono</label>
-                        <InputText id="name" v-model.trim="cliente.telefono" required="true" autofocus />
+                        <InputText id="name" v-model.trim="usuario.name" required="true" autofocus :class="{ 'p-invalid': submitted && !usuario.name }" />
+                        <small class="p-invalid" v-if="submitted && !usuario.name">Name is required.</small>
                     </div>
                     <div class="field">
                         <label for="name">Email</label>
-                        <InputText id="name" v-model.trim="cliente.email" required="true" autofocus  />
+                        <InputText id="name" v-model.trim="usuario.email" required="true" autofocus  />
+                    </div>
+                    <div class="field">
+                        <label for="name">Identificacion</label>
+                        <InputText id="name" v-model.trim="usuario.identificacion" required="true" autofocus :class="{ 'p-invalid': submitted && !usuario.identificacion }" />
+                        <small class="p-invalid" v-if="submitted && !usuario.identificacion">Name is required.</small>
+                    </div>
+                    <div class="field">
+                        <label for="description">Direccion</label>
+                        <Textarea id="description" v-model="usuario.direccion" required="true" rows="3" cols="20" />
+                    </div>
+                    <div class="field">
+                        <label for="name">Sueldo</label>
+                        <InputText id="name" v-model.trim="usuario.sueldo" required="true" autofocus />
+                    </div>
+                    <div class="field">
+                        <label for="description">Cargo</label>
+                        <Textarea id="description" v-model="usuario.cargo" required="true" rows="3" cols="20" />
                     </div>
        
 
@@ -200,14 +219,14 @@ const initFilters = () => {
                 <Dialog v-model:visible="modalBorrarRegistro" :style="{ width: '450px' }" header="Confirmar" :modal="true">
                     <div class="flex align-items-center justify-content-center">
                         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-                        <span v-if="cliente"
-                            >Estas seguro de eliminar a <b>{{ cliente.nombre }}</b
+                        <span v-if="usuario"
+                            >Estas seguro de eliminar a <b>{{ usuario.name }}</b
                             >?</span
                         >
                     </div>
                     <template #footer>
                         <Button label="No" icon="pi pi-times" class="p-button-text" @click="modalBorrarRegistro = false" />
-                        <Button label="SI" icon="pi pi-check" class="p-button-text" @click="deleteClient(cliente.id)" />
+                        <Button label="SI" icon="pi pi-check" class="p-button-text" @click="deleteClient(usuario.id)" />
                     </template>
                 </Dialog>
 

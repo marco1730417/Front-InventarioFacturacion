@@ -4,7 +4,7 @@ const token = localStorage.getItem("token");
 export default class ClientService {
     
     getClients() {
-        return fetch('http://127.0.0.1:8000/api/user' + '/get-clientes'
+        return fetch('http://127.0.0.1:8000/api' + '/get-clientes'
         , {
             headers: {
               Authorization: "Bearer " + token,
