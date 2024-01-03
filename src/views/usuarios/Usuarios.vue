@@ -169,6 +169,12 @@ const initFilters = () => {
                          <span v-if="slotProps.data.perfil == 2">Estándar</span>   
                         </template>
                     </Column>
+                    <Column field="sueldo" header="HORAS" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                        <template #body="slotProps">
+                            <span class="p-column-title">HORAS</span>
+                            {{ slotProps.data.numero_horas_laborables }}
+                        </template>
+                    </Column>
                  
                                    
                     <Column headerStyle="min-width:10rem;" header="ACCIONES ">
@@ -205,6 +211,10 @@ const initFilters = () => {
                     <div class="field">
                         <label for="description">Cargo</label>
                         <Textarea id="description" v-model="usuario.cargo" required="true" rows="3" cols="20" />
+                    </div>
+                    <div class="field">
+                        <label for="description">Número Horas Laborables</label>
+                        <Textarea id="description" v-model="usuario.numero_horas_laborables" required="true" rows="3" cols="20" />
                     </div>
        
 

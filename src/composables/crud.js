@@ -8,6 +8,8 @@ export function useRestApi()
   const toast = useToast();
   const datos = ref(null);
   const datosId = ref([]);
+  const datosMarcaciones = ref([]);
+  
   const datosIdAuxiliar = ref([]);
   const error = ref(null)
 
@@ -34,12 +36,60 @@ export function useRestApi()
 
     } 
   }
+  async function obtenerRegistrosMarcaciones(url,data) 
+
+
+  {
+    console.log(data);
+    try {
+      const response = await axios.post(`${url}/obtener-registro-marcaciones`,data)
+      datosMarcaciones.value = response.data;
+  
+    } catch (e) {
+      error.value = e
+      toast.add({ severity: 'error', summary: error.value, detail: error, life: 4000 });
+
+    } 
+  }
 
 
   async function guardarRegistro(url,data) 
   {
     try {
       const response = await axios.post(`${url}/guardar-registro`,data)
+      if (response.status == 200) {
+        toast.add({ severity: 'success', summary: 'Éxito', detail: response.msj, life: 3000 });
+
+    } else { 
+  
+      toast.add({ severity: 'error', summary: 'Error', detail: response.msj, life: 3000 });
+  
+  }
+    } catch (error) {
+     
+    }
+  }
+
+  async function guardarRegistroEntrada(url,data) 
+  {
+    try {
+      const response = await axios.post(`${url}/guardar-registro-entrada`,data)
+      if (response.status == 200) {
+        toast.add({ severity: 'success', summary: 'Éxito', detail: response.msj, life: 3000 });
+
+    } else { 
+  
+      toast.add({ severity: 'error', summary: 'Error', detail: response.msj, life: 3000 });
+  
+  }
+    } catch (error) {
+     
+    }
+  }
+  async function guardarRegistroSalida(url,data) 
+  {
+    try {
+      const response = await axios.post(`${url}/guardar-registro-salida`,data)
       if (response.status == 200) {
         toast.add({ severity: 'success', summary: 'Éxito', detail: response.msj, life: 3000 });
 
@@ -92,12 +142,16 @@ export function useRestApi()
     datos,   
     error,
     datosId,
+    datosMarcaciones,
     datosIdAuxiliar,
     obtenerRegistros,
     guardarRegistro,
     editarRegistro,
     eliminarRegistro,
     obtenerRegistrosporId,
+    obtenerRegistrosMarcaciones,
+    guardarRegistroEntrada,
+    guardarRegistroSalida
     
   }
 }

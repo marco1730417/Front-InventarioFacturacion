@@ -62,6 +62,13 @@ const router = createRouter({
                     meta: { authorize: Role.SuperAdministrador},
                     component: () => import('@/views/usuarios/Usuarios.vue')
                 },
+                {
+                    path: '/facturacion/marcaciones',
+                    name: 'marcaciones',
+                    
+                    meta: { authorize: Role.SuperAdministrador},
+                    component: () => import('@/views/marcaciones/Marcaciones.vue')
+                },
                 
                 {
                     path: '/uikit/list',

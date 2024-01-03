@@ -14,6 +14,8 @@ const model = ref([
         { label: 'Clientes', icon: 'pi pi-fw pi-table', to: '/facturacion/clientes' },
      
         { label: 'Usuarios', icon: 'pi pi-fw pi-user', to: '/facturacion/usuarios' },
+
+        { label: 'Marcaciones', icon: 'pi pi-fw pi-clock', to: '/facturacion/marcaciones' },
      
         { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
             { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/uikit/input' },
