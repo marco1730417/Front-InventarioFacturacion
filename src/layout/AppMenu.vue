@@ -17,6 +17,8 @@ const model = ref([
 
         { label: 'Marcaciones', icon: 'pi pi-fw pi-clock', to: '/facturacion/marcaciones' },
      
+        { label: 'Agendamiento', icon: 'pi pi-fw pi-calendar', to: '/facturacion/agendamiento' },
+     
         { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
             { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/uikit/input' },
             { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', to: '/uikit/floatlabel' },

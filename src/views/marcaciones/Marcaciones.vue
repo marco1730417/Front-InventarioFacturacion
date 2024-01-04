@@ -101,7 +101,7 @@ const initFilters = () => {
 
                     <!--     <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
                  -->
-                    <Column field="nombre" header="FECHA" :sortable="true" headerStyle="width:25%; min-width:10rem;">
+                    <Column field="nombre" header="FECHA"  headerStyle="width:25%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">FECHA</span>
 
@@ -109,15 +109,15 @@ const initFilters = () => {
 
                         </template>
                     </Column>
-                    <Column field="identificacion" header="ENTRADA" :sortable="true"
-                        headerStyle="width:14%; min-width:10rem;">
+                    <Column field="identificacion" header="ENTRADA" 
+                        headerStyle="width:25%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">ENTRADA</span>
                             {{ slotProps.data.hora_entrada }}
                         </template>
                     </Column>
-                    <Column field="identificacion" header="SALIDA" :sortable="true"
-                        headerStyle="width:14%; min-width:10rem;">
+                    <Column field="identificacion" header="SALIDA" 
+                        headerStyle="width:25%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">SALIDA</span>
                             {{ slotProps.data.hora_salida }}

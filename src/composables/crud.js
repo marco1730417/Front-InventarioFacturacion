@@ -9,6 +9,9 @@ export function useRestApi()
   const datos = ref(null);
   const datosId = ref([]);
   const datosMarcaciones = ref([]);
+  const datosAgendamiento = ref([]);
+
+  
   
   const datosIdAuxiliar = ref([]);
   const error = ref(null)
@@ -36,6 +39,21 @@ export function useRestApi()
 
     } 
   }
+  async function cambiarEstadoAgendamiento(url,id) 
+  {
+    try {
+      const response = await axios.get(`${url}/cambiar-estado-agendamiento/${id}`)
+      datosId.value = response.data;
+  
+    } catch (e) {
+      error.value = e
+      toast.add({ severity: 'error', summary: error.value, detail: error, life: 4000 });
+
+    } 
+  }
+
+
+  
   async function obtenerRegistrosMarcaciones(url,data) 
 
 
@@ -44,6 +62,20 @@ export function useRestApi()
     try {
       const response = await axios.post(`${url}/obtener-registro-marcaciones`,data)
       datosMarcaciones.value = response.data;
+  
+    } catch (e) {
+      error.value = e
+      toast.add({ severity: 'error', summary: error.value, detail: error, life: 4000 });
+
+    } 
+  }
+  async function obtenerRegistrosAgendamiento(url,data) 
+
+
+  {
+    try {
+      const response = await axios.post(`${url}/obtener-registro-agendamiento`,data)
+      datosAgendamiento.value = response.data;
   
     } catch (e) {
       error.value = e
@@ -102,6 +134,22 @@ export function useRestApi()
      
     }
   }
+  async function cargarAgendamiento(url,data) 
+  {
+    try {
+      const response = await axios.post(`${url}/cargar-agendamiento`,data)
+      if (response.status == 200) {
+        toast.add({ severity: 'success', summary: 'Éxito', detail: response.msj, life: 3000 });
+
+    } else { 
+  
+      toast.add({ severity: 'error', summary: 'Error', detail: response.msj, life: 3000 });
+  
+  }
+    } catch (error) {
+     
+    }
+  }
 
   async function editarRegistro(url,data) 
   {
@@ -145,13 +193,17 @@ export function useRestApi()
     datosMarcaciones,
     datosIdAuxiliar,
     obtenerRegistros,
+    obtenerRegistrosAgendamiento,
     guardarRegistro,
     editarRegistro,
     eliminarRegistro,
     obtenerRegistrosporId,
     obtenerRegistrosMarcaciones,
     guardarRegistroEntrada,
-    guardarRegistroSalida
+    guardarRegistroSalida,
+    cargarAgendamiento,
+    cambiarEstadoAgendamiento,
+    datosAgendamiento
     
   }
 }
