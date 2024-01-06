@@ -13,16 +13,20 @@ const url = ref('marcaciones');
 const modalRegistro = ref(false);
 const modalBorrarRegistro = ref(false);
 const marcacion = ref({});
-const fecha_inicio = ref('');
-const fecha_fin = ref('');
+const fecha_inicio = ref(null);
+const fecha_fin = ref(null)
 const dt = ref(null);
 const filters = ref({});
 const submitted = ref(false);
 const usuario = ref(auth.user.id);
 
-const dataenviar = ref({ usuario_id: usuario.value })
 
-marcacion.value.usuario_id = usuario.value;
+const dataenviar = ref({ usuario_id: usuario.value })
+dataenviar.value.fechaInicio = fecha_inicio
+dataenviar.value.fechaFinal = fecha_fin
+
+
+marcacion.value.usuario_id = usuario.value
 
 onBeforeMount(() => {
     initFilters();
@@ -39,6 +43,14 @@ const guardarRegistrodeEntrada = () => {
 
     //Creacion
     guardarRegistroEntrada(url.value, marcacion.value);
+    obtenerRegistrosMarcaciones(url.value, dataenviar.value);
+
+};
+
+
+const obtenerRegistrosdeMarcaciones = () => {
+  
+
     obtenerRegistrosMarcaciones(url.value, dataenviar.value);
 
 };
@@ -83,6 +95,39 @@ const initFilters = () => {
 
         <div class="col-12 lg:col-12">
             <div class="card">
+
+                <Toolbar class="mb-4">
+                    <template v-slot:start>
+                        <div class="my-2">
+                            <div class="card flex justify-content-center">
+                                <h5>Fecha Inicio</h5>
+                                <Calendar :showIcon="true" :showButtonBar="true" v-model="fecha_inicio"></Calendar>
+
+
+                            </div>
+                        </div>
+                        <div class="my-1">
+                            <div class="">
+                      
+
+                            </div>
+                            
+                        </div>
+                        <div class="my-2">
+                            <div class="card flex justify-content-center">
+                                <h5>Fecha Final</h5>
+                                <Calendar :showIcon="true" :showButtonBar="true" v-model="fecha_fin"></Calendar>
+
+
+                            </div>
+                            
+                        </div>
+                    </template>
+
+                    <template v-slot:end>
+                        <Button label="Buscar" icon="pi pi-search" class="p-button-info" @click="obtenerRegistrosdeMarcaciones" />
+                    </template>
+                </Toolbar>
 
                 <DataTable ref="dt" :value="datosMarcaciones" dataKey="id" :paginator="true" :rows="10" :filters="filters"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
