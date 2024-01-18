@@ -19,6 +19,7 @@ const model = ref([
      
         { label: 'Agendamiento', icon: 'pi pi-fw pi-calendar', to: '/facturacion/agendamiento' },
      
+    
         { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
             { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/uikit/input' },
             { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', to: '/uikit/floatlabel' },
@@ -38,12 +39,19 @@ const model = ref([
         ]
     },
     {
+        label: 'Reportes',
+        items: [
+            { label: 'Horas Extras', icon: 'pi pi-fw pi-clock', to: '/facturacion/horasextras' },
+            { label: 'Asistencia', icon: 'pi pi-fw pi-user', to: '/facturacion/asistencia'  }
+        ]
+    },
+ /*    {
         label: 'Prime Blocks',
         items: [
             { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', to: '/blocks', badge: 'NEW' },
             { label: 'All Blocks', icon: 'pi pi-fw pi-globe', url: 'https://www.primefaces.org/primeblocks-vue', target: '_blank' }
         ]
-    },
+    }, */
     {
         label: 'Utilities',
         items: [

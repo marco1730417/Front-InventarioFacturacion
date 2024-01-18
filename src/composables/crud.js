@@ -9,6 +9,8 @@ export function useRestApi()
   const datos = ref(null);
   const datosId = ref([]);
   const datosMarcaciones = ref([]);
+  const datosReporteMarcaciones = ref([]);
+  
   const datosAgendamiento = ref([]);
 
   
@@ -69,6 +71,21 @@ export function useRestApi()
 
     } 
   }
+
+  async function calcularMarcaciones(url,data) 
+
+  {
+    try {
+      const response = await axios.post(`${url}/calcular-marcaciones`,data)
+      datosReporteMarcaciones.value = response.data;
+  
+    } catch (e) {
+      error.value = e
+      toast.add({ severity: 'error', summary: error.value, detail: error, life: 4000 });
+
+    } 
+  }
+
   async function obtenerRegistrosAgendamiento(url,data) 
 
 
@@ -203,7 +220,9 @@ export function useRestApi()
     guardarRegistroSalida,
     cargarAgendamiento,
     cambiarEstadoAgendamiento,
-    datosAgendamiento
+    datosAgendamiento,
+    calcularMarcaciones,
+    datosReporteMarcaciones
     
   }
 }
