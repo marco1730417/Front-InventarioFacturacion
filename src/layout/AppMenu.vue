@@ -4,23 +4,29 @@ import { ref } from 'vue';
 import AppMenuItem from './AppMenuItem.vue';
 
 const model = ref([
-    {
+   /*  {
         label: 'Home',
-        items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
-    },
-    {
-        label: 'UI Components',
         items: [
-        { label: 'Clientes', icon: 'pi pi-fw pi-table', to: '/facturacion/clientes' },
-     
+            { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }
+        ]
+
+    }, */
+    {
+        label: 'MENU GENERAL',
+        items: [
+      /*   { label: 'Clientes', icon: 'pi pi-fw pi-table', to: '/facturacion/clientes' },
+     */ 
         { label: 'Usuarios', icon: 'pi pi-fw pi-user', to: '/facturacion/usuarios' },
 
         { label: 'Marcaciones', icon: 'pi pi-fw pi-clock', to: '/facturacion/marcaciones' },
      
+        { label: 'Marcaciones Manual', icon: 'pi pi-fw pi-clock', to: '/facturacion/marcacionesmanual' },
+     
+
         { label: 'Agendamiento', icon: 'pi pi-fw pi-calendar', to: '/facturacion/agendamiento' },
      
     
-        { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
+/*         { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
             { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/uikit/input' },
             { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', to: '/uikit/floatlabel' },
             { label: 'Invalid State', icon: 'pi pi-fw pi-exclamation-circle', to: '/uikit/invalidstate' },
@@ -35,7 +41,7 @@ const model = ref([
             { label: 'Message', icon: 'pi pi-fw pi-comment', to: '/uikit/message' },
             { label: 'File', icon: 'pi pi-fw pi-file', to: '/uikit/file' },
             { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', to: '/uikit/charts' },
-            { label: 'Misc', icon: 'pi pi-fw pi-circle', to: '/uikit/misc' }
+            { label: 'Misc', icon: 'pi pi-fw pi-circle', to: '/uikit/misc' } */
         ]
     },
     {
@@ -52,14 +58,14 @@ const model = ref([
             { label: 'All Blocks', icon: 'pi pi-fw pi-globe', url: 'https://www.primefaces.org/primeblocks-vue', target: '_blank' }
         ]
     }, */
-    {
+ /*    {
         label: 'Utilities',
         items: [
             { label: 'PrimeIcons', icon: 'pi pi-fw pi-prime', to: '/utilities/icons' },
             { label: 'PrimeFlex', icon: 'pi pi-fw pi-desktop', url: 'https://www.primefaces.org/primeflex/', target: '_blank' }
         ]
-    },
-    {
+    }, */
+   /*  {
         label: 'Pages',
         icon: 'pi pi-fw pi-briefcase',
         to: '/pages',
@@ -111,8 +117,8 @@ const model = ref([
                 to: '/pages/empty'
             }
         ]
-    },
-    {
+    }, */
+    /* {
         label: 'Hierarchy',
         items: [
             {
@@ -155,8 +161,8 @@ const model = ref([
                 ]
             }
         ]
-    },
-    {
+    }, */
+ /*    {
         label: 'Get Started',
         items: [
             {
@@ -171,7 +177,7 @@ const model = ref([
                 target: '_blank'
             }
         ]
-    }
+    } */
 ]);
 </script>
 
@@ -181,11 +187,7 @@ const model = ref([
             <app-menu-item v-if="!item.separator" :item="item" :index="i"></app-menu-item>
             <li v-if="item.separator" class="menu-separator"></li>
         </template>
-        <li>
-            <a href="https://www.primefaces.org/primeblocks-vue/#/" target="_blank">
-                <img src="/layout/images/banner-primeblocks.png" alt="Prime Blocks" class="w-full mt-3" />
-            </a>
-        </li>
+     
     </ul>
 </template>
 

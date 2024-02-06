@@ -151,6 +151,40 @@ export function useRestApi()
      
     }
   }
+
+  async function GuardarMarcacion(url,data) 
+  {
+    try {
+      const response = await axios.post(`${url}/guardar-marcacion`,data)
+      if (response.status == 200) {
+        toast.add({ severity: 'success', summary: 'Éxito', detail: response.msj, life: 3000 });
+
+    } else { 
+  
+      toast.add({ severity: 'error', summary: 'Error', detail: response.msj, life: 3000 });
+  
+  }
+    } catch (error) {
+     
+    }
+  }
+  async function GuardarMarcacionSalida(url,data) 
+  {
+    try {
+      const response = await axios.post(`${url}/guardar-marcacion-salida`,data)
+      if (response.status == 200) {
+        toast.add({ severity: 'success', summary: 'Éxito', detail: response.msj, life: 3000 });
+
+    } else { 
+  
+      toast.add({ severity: 'error', summary: 'Error', detail: response.msj, life: 3000 });
+  
+  }
+    } catch (error) {
+     
+    }
+  }
+
   async function cargarAgendamiento(url,data) 
   {
     try {
@@ -222,7 +256,9 @@ export function useRestApi()
     cambiarEstadoAgendamiento,
     datosAgendamiento,
     calcularMarcaciones,
-    datosReporteMarcaciones
+    datosReporteMarcaciones,
+    GuardarMarcacion,
+    GuardarMarcacionSalida,
     
   }
 }

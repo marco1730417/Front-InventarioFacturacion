@@ -70,6 +70,13 @@ const router = createRouter({
                     component: () => import('@/views/marcaciones/Marcaciones.vue')
                 },
                 {
+                    path: '/facturacion/marcacionesmanual',
+                    name: 'marcacionesmanual',
+                    
+                    meta: { authorize: Role.SuperAdministrador},
+                    component: () => import('@/views/marcacionesmanual/MarcacionesManual.vue')
+                },
+                {
                     path: '/facturacion/agendamiento',
                     name: 'agendamiento',
                     
