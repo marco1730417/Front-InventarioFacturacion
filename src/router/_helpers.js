@@ -1,4 +1,4 @@
 export const Role = {
     SuperAdministrador: '1',
-    Vendedor: '2'
+    Usuario: '2'
 }

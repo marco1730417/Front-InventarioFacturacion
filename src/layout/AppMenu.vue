@@ -18,7 +18,7 @@ const model = ref([
         items: [
       /*   { label: 'Clientes', icon: 'pi pi-fw pi-table', to: '/facturacion/clientes' },
      */ 
-        { label: 'Usuarios', icon: 'pi pi-fw pi-user', to: '/facturacion/usuarios' },
+        { label: 'Usuarios', icon: 'pi pi-fw pi-user', to: '/facturacion/usuarios'  },
 
         { label: 'Marcaciones', icon: 'pi pi-fw pi-clock', to: '/facturacion/marcaciones' },
      
