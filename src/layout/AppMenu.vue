@@ -2,6 +2,8 @@
 import { ref } from 'vue';
 
 import AppMenuItem from './AppMenuItem.vue';
+import { useUserStore } from '@/store/user.js';
+const authStore = useUserStore();
 
 const model = ref([
    /*  {
@@ -178,7 +180,26 @@ const model = ref([
             }
         ]
     } */
+
+    {
+        label: 'Salir',
+        items: [
+            {
+                label: 'Salir',
+                icon: 'pi pi-fw pi-question',
+                command: () => logout()
+            },
+       
+        ]
+    }
 ]);
+const logout = async () => {
+    let data = {
+        id: authStore.user.id_funcionario,
+    }
+    await authStore.logout(data);
+    authStore.$reset();
+};
 </script>
 
 <template>
