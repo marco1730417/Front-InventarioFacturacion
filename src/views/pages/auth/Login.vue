@@ -11,13 +11,13 @@ const authStore = useUserStore();
 export default {
   name: 'Login',
   setup() {
-    const email = ref('');
+    const identificacion = ref('');
     const password = ref('');
     const router = useRouter();
 
     const submit1 = async () => {
       const response = await axios.post('/login', {
-        email: email.value,
+        identificacion: identificacion.value,
         password: password.value,
       });
       localStorage.setItem('token', response.data.token);
@@ -27,7 +27,7 @@ export default {
 
     const submit = async () => {
         let data = {
-            email: email.value,
+            identificacion: identificacion.value,
         password: password.value,
     }
     
@@ -35,7 +35,7 @@ export default {
     };
 
     return {
-      email,
+        identificacion,
       password,
       submit,
     };
@@ -53,8 +53,8 @@ export default {
                     <form class="space-y-4" @submit.prevent="submit">
       
                     <div>
-                        <label for="email" class="block text-900 text-xl font-medium mb-2">Cédula</label>
-                        <InputText id="email" type="text" placeholder="Ingrese su cedula" class="w-full md:w-30rem mb-5" style="padding: 1rem" v-model="email" />
+                        <label for="identificacion" class="block text-900 text-xl font-medium mb-2">Cédula</label>
+                        <InputText id="identificacion" type="text" placeholder="Ingrese su identificacion" class="w-full md:w-30rem mb-5" style="padding: 1rem" v-model="identificacion" />
 
                         <label for="password" class="block text-900 font-medium text-xl mb-2">Contraseña</label>
                         <Password id="password" v-model="password" placeholder="Ingrese su contraseña" :toggleMask="true" class="w-full mb-3" inputClass="w-full" inputStyle="padding:1rem"></Password>
