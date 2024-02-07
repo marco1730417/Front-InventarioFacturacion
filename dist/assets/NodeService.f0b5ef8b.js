@@ -1,0 +1,1 @@
+const t="/sakai-vue/";class n{getTreeTableNodes(){return fetch(t+"demo/data/treetablenodes.json").then(e=>e.json()).then(e=>e.root)}getTreeNodes(){return fetch(t+"demo/data/treenodes.json").then(e=>e.json()).then(e=>e.root)}}export{n as N};
