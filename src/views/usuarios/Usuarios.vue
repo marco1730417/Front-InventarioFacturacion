@@ -214,9 +214,10 @@ const initFilters = () => {
                         <Textarea id="description" v-model="usuario.cargo" required="true" rows="3" cols="20" />
                     </div> -->
                     <div class="field">
-                        <label for="description">Número Horas Laborables</label>
-                        <InputNumber  id="name" v-model.trim="usuario.numero_horas_laborables"  required="true" autofocus />
-                      
+                        <label for="description">Número Horas Laborables (Escribir en formato: 08:00:00)</label>
+                    <!--     <InputNumber  id="name" v-model.trim="usuario.numero_horas_laborables"  required="true" autofocus />
+                     -->    <InputText id="description" v-model="usuario.numero_horas_laborables" required="true" />
+                    
                     </div>
        
 
