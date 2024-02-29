@@ -125,14 +125,16 @@ export function useRestApi()
       const response = await axios.post(`${url}/guardar-registro-entrada`,data)
       if (response.status == 200) {
         toast.add({ severity: 'success', summary: 'Éxito', detail: response.msj, life: 3000 });
-
+        alert('Registro almacenado exitosamente');
     } else { 
-  
+      console.log('error')
       toast.add({ severity: 'error', summary: 'Error', detail: response.msj, life: 3000 });
   
   }
     } catch (error) {
-     
+      //console.log(error)
+      alert('Registro ya existente');
+         
     }
   }
   async function guardarRegistroSalida(url,data) 
@@ -141,14 +143,14 @@ export function useRestApi()
       const response = await axios.post(`${url}/guardar-registro-salida`,data)
       if (response.status == 200) {
         toast.add({ severity: 'success', summary: 'Éxito', detail: response.msj, life: 3000 });
-
+        alert('Registro almacenado exitosamente');
     } else { 
   
       toast.add({ severity: 'error', summary: 'Error', detail: response.msj, life: 3000 });
   
   }
     } catch (error) {
-     
+      alert('Registro ya existente');
     }
   }
 

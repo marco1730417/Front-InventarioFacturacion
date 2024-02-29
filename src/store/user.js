@@ -22,22 +22,27 @@ export const useUserStore = defineStore("user", {
     persist: true,
 
     actions: {
-
         async login(datos) {
-
-            const res = await axios.post('login', datos);
-            this.mensaje = res.data;
-            //Validamos que al menos exista el dato usuario para cargar los estados
-            if(this.mensaje.user) { 
-            this.user = this.mensaje.user;
-            this.token = this.mensaje.token;
-            this.router.push({ path: '/' }); // Pantalla de usuario administrador
-    
+            try {
+                const res = await axios.post('login', datos);
+                this.mensaje = res.data;
+                //Validamos que al menos exista el dato usuario para cargar los estados
+                if (this.mensaje.user) {
+                    this.user = this.mensaje.user;
+                    this.token = this.mensaje.token;
+                    this.router.push({ path: '/' }); // Pantalla de usuario administrador
+                }
+            } catch (error) {
+                if (error.response.status === 401) {
+                    // Mostrar alerta de credenciales incorrectas
+                    alert('Credenciales incorrectas. Por favor, verifica tu usuario y contraseña.');
+                } else {
+                    // Otro manejo de errores
+                    console.error('Error en la solicitud:', error);
+                }
+            }
         }
-         
-
-        },
-     
+     ,
         
         
         async logout(datos) {
