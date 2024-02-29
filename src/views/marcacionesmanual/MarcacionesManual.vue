@@ -6,7 +6,7 @@ import { useUserStore } from '@/store/user.js';
 
 const auth = useUserStore();
 
-const { GuardarMarcacionSalida, datos,guardarRegistroEntrada, GuardarMarcacion, obtenerRegistrosMarcaciones, obtenerRegistros } = useRestApi() //Instancia composable Rest
+const { GuardarMarcacionSalida, datos, GuardarMarcacion, obtenerRegistros } = useRestApi() //Instancia composable Rest
 const url = ref('marcaciones');
 const urlusuarios = ref('usuarios');
 const time = ref()
@@ -15,8 +15,6 @@ const timesalida = ref()
 const fechasalida = ref()
 const selectedUsuario = ref();
 
-const modalRegistro = ref(false);
-const modalBorrarRegistro = ref(false);
 const marcacion = ref({});
 const fecha_inicio = ref(null);
 const fecha_fin = ref(null)
@@ -47,23 +45,6 @@ onMounted(() => {
 
 });
 
-
-const guardarRegistrodeEntrada = () => {
-
-    //Creacion
-    guardarRegistroEntrada(url.value, marcacion.value);
-    obtenerRegistrosMarcaciones(url.value, dataenviar.value);
-
-};
-
-
-const obtenerRegistrosdeMarcaciones = () => {
-  
-
-    obtenerRegistrosMarcaciones(url.value, dataenviar.value);
-
-};
-
 const GuardarMarcacionIng = () => {
 
     GuardarMarcacion(url.value, dataenviar.value);
@@ -87,7 +68,8 @@ const initFilters = () => {
 <template>
     <div class="grid">
         <div class="col-12 lg:col-12">
-
+            <Toast />
+           
             <Toolbar class="mb-4">
              
                     <template v-slot:start>

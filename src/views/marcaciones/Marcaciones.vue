@@ -9,18 +9,12 @@ const auth = useUserStore();
 const { datosMarcaciones, guardarRegistroEntrada, guardarRegistroSalida, obtenerRegistrosMarcaciones } = useRestApi() //Instancia composable Rest
 const url = ref('marcaciones');
 
-
-const modalRegistro = ref(false);
-const modalBorrarRegistro = ref(false);
 const marcacion = ref({});
 const fecha_inicio = ref(null);
 const fecha_fin = ref(null)
 const dt = ref(null);
 const filters = ref({});
-const submitted = ref(false);
 const usuario = ref(auth.user.id);
-
-
 const dataenviar = ref({ usuario_id: usuario.value })
 dataenviar.value.fechaInicio = fecha_inicio
 dataenviar.value.fechaFinal = fecha_fin
@@ -94,9 +88,48 @@ const initFilters = () => {
         </div>
 
         <div class="col-12 lg:col-12">
+            <Toast />
+                
+
+            <div class="grid p-fluid">
+        <div class="col">
+            <div class="card">
+                <h5>Consulta de Asistencia</h5>
+                <div class="p-fluid grid">
+                    <div class="col-9 md:col-4">
+                        <div class="field">
+                            <label for="inputtext">Fecha Inicio</label>
+                            <Calendar :showIcon="true" :showButtonBar="true" v-model="fecha_inicio"></Calendar>
+
+                        </div>
+                   
+                    </div>
+
+                    <div class="col-9 md:col-4">
+                        <div class="field">
+                            <label for="inputmask">Fecha Fin</label>
+                            <Calendar :showIcon="true" :showButtonBar="true" v-model="fecha_fin"></Calendar>
+
+                        </div>
+                
+                    </div>
+                    <div class="col-9 md:col-3">
+                        <div class="field">
+                            <label for="inputmask">Acciones</label>
+                            <Button label="Consultar" icon="pi pi-search" class="p-button-success" @click="obtenerRegistrosdeMarcaciones" />
+              
+                        </div>
+                
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
             <div class="card">
 
-                <Toolbar class="mb-4">
+           <!--      <Toolbar class="mb-4">
                     <template v-slot:start>
                         <div class="my-2">
                             <div class="card flex justify-content-center">
@@ -127,7 +160,7 @@ const initFilters = () => {
                     <template v-slot:end>
                         <Button label="Buscar" icon="pi pi-search" class="p-button-info" @click="obtenerRegistrosdeMarcaciones" />
                     </template>
-                </Toolbar>
+                </Toolbar> -->
 
                 <DataTable ref="dt" :value="datosMarcaciones" dataKey="id" :paginator="true" :rows="10" :filters="filters"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"

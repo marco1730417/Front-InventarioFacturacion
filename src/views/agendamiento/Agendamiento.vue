@@ -3,7 +3,7 @@ import { FilterMatchMode } from 'primevue/api';
 import { ref, onMounted, onBeforeMount } from 'vue';
 import { useRestApi } from '@/composables/crud';
 
-const { cargarAgendamiento, datosAgendamiento, cambiarEstadoAgendamiento, obtenerRegistrosAgendamiento, eliminarRegistro } = useRestApi() //Instancia composable Rest
+const { cargarAgendamiento, datosAgendamiento, cambiarEstadoAgendamiento, obtenerRegistrosAgendamiento } = useRestApi() //Instancia composable Rest
 const url = ref('agendamiento');
 
 
@@ -31,16 +31,11 @@ const mes = ref([
 
 ]);
 
-const modalRegistro = ref(false);
-const modalBorrarRegistro = ref(false);
-const cliente = ref({});
+
 const dt = ref(null);
 const filters = ref({});
 
 const datosenviar = ref({ mes: selectedMes, anio: selectedAnio })
-
-const submitted = ref(false);
-
 
 onBeforeMount(() => {
     initFilters();

@@ -136,12 +136,12 @@ const initFilters = () => {
                       
                         </template>
                     </Column>
-                    <Column field="identificacion" header="EMAIL" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                 <!--    <Column field="identificacion" header="EMAIL" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">Email</span>
                             {{ slotProps.data.email }}
                         </template>
-                    </Column>
+                    </Column> -->
                     <Column field="identificacion" header="IDENTIFICACION" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">IDENTIFICACION</span>
@@ -154,12 +154,12 @@ const initFilters = () => {
                             {{ slotProps.data.sueldo }}
                         </template>
                     </Column>
-                    <Column field="cargo" header="CARGO" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                <!--     <Column field="cargo" header="CARGO" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">Cargo</span>
                             {{ slotProps.data.cargo }}
                         </template>
-                    </Column>
+                    </Column> -->
            
                     <Column field="sueldo" header="PERFIL" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
@@ -187,34 +187,36 @@ const initFilters = () => {
 
                 <Dialog v-model:visible="modalRegistro" :style="{ width: '750px' }" header="Detalles de Registro" :modal="true" class="p-fluid">
                     <div class="field">
-                        <label for="name">Nombre</label>
+                        <label for="name">Nombres y Apellidos</label>
                         <InputText id="name" v-model.trim="usuario.name" required="true" autofocus :class="{ 'p-invalid': submitted && !usuario.name }" />
                         <small class="p-invalid" v-if="submitted && !usuario.name">Name is required.</small>
                     </div>
-                    <div class="field">
+                 <!--    <div class="field">
                         <label for="name">Email</label>
                         <InputText id="name" v-model.trim="usuario.email" required="true" autofocus  />
-                    </div>
+                    </div> -->
                     <div class="field">
-                        <label for="name">Identificacion</label>
+                        <label for="name">Número de cédula</label>
                         <InputText id="name" v-model.trim="usuario.identificacion" required="true" autofocus :class="{ 'p-invalid': submitted && !usuario.identificacion }" />
                         <small class="p-invalid" v-if="submitted && !usuario.identificacion">Name is required.</small>
                     </div>
-                    <div class="field">
-                        <label for="description">Direccion</label>
+                   <!--  <div class="field">
+                        <label for="description">Dirección</label>
                         <Textarea id="description" v-model="usuario.direccion" required="true" rows="3" cols="20" />
-                    </div>
+                    </div> -->
                     <div class="field">
-                        <label for="name">Sueldo</label>
-                        <InputText id="name" v-model.trim="usuario.sueldo" required="true" autofocus />
+                        <label for="name">Salario.</label>
+                        <InputNumber :minFractionDigits="2" :maxFractionDigits="5" id="name" v-model.trim="usuario.sueldo" required="true" autofocus />
+                        <!-- <small>Por favor si se usa decimales separar con punto (.)</small> -->
                     </div>
-                    <div class="field">
+                  <!--   <div class="field">
                         <label for="description">Cargo</label>
                         <Textarea id="description" v-model="usuario.cargo" required="true" rows="3" cols="20" />
-                    </div>
+                    </div> -->
                     <div class="field">
                         <label for="description">Número Horas Laborables</label>
-                        <Textarea id="description" v-model="usuario.numero_horas_laborables" required="true" rows="3" cols="20" />
+                        <InputNumber  id="name" v-model.trim="usuario.numero_horas_laborables"  required="true" autofocus />
+                      
                     </div>
        
 

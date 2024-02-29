@@ -46,6 +46,8 @@ export function useRestApi()
     try {
       const response = await axios.get(`${url}/cambiar-estado-agendamiento/${id}`)
       datosId.value = response.data;
+      toast.add({ severity: 'success', summary: 'Éxito', detail: 'Dato almacenado correctamente', life: 3000 });
+
   
     } catch (e) {
       error.value = e
@@ -124,33 +126,32 @@ export function useRestApi()
     try {
       const response = await axios.post(`${url}/guardar-registro-entrada`,data)
       if (response.status == 200) {
-        toast.add({ severity: 'success', summary: 'Éxito', detail: response.msj, life: 3000 });
-        alert('Registro almacenado exitosamente');
-    } else { 
-      console.log('error')
-      toast.add({ severity: 'error', summary: 'Error', detail: response.msj, life: 3000 });
-  
-  }
-    } catch (error) {
-      //console.log(error)
-      alert('Registro ya existente');
-         
+        toast.add({ severity: 'success', summary: 'Éxito', detail: 'Dato almacenado correctamente', life: 3000 });
+
     }
+
+    } catch (error) {
+      toast.add({ severity: 'error', summary: 'Error', detail: 'Dato ya existente', life: 3000 });
+       
+    } 
   }
+
   async function guardarRegistroSalida(url,data) 
   {
     try {
       const response = await axios.post(`${url}/guardar-registro-salida`,data)
       if (response.status == 200) {
-        toast.add({ severity: 'success', summary: 'Éxito', detail: response.msj, life: 3000 });
-        alert('Registro almacenado exitosamente');
-    } else { 
+     
+        toast.add({ severity: 'success', summary: 'Éxito', detail: 'Dato almacenado correctamente', life: 3000 });
+ 
+      } else { 
   
       toast.add({ severity: 'error', summary: 'Error', detail: response.msj, life: 3000 });
   
   }
     } catch (error) {
-      alert('Registro ya existente');
+      toast.add({ severity: 'error', summary: 'Error', detail: 'Dato ya existente', life: 3000 });
+ 
     }
   }
 
@@ -159,7 +160,7 @@ export function useRestApi()
     try {
       const response = await axios.post(`${url}/guardar-marcacion`,data)
       if (response.status == 200) {
-        toast.add({ severity: 'success', summary: 'Éxito', detail: response.msj, life: 3000 });
+        toast.add({ severity: 'success', summary: 'Éxito', detail: 'Dato almacenado correctamente', life: 3000 });
 
     } else { 
   
@@ -175,7 +176,8 @@ export function useRestApi()
     try {
       const response = await axios.post(`${url}/guardar-marcacion-salida`,data)
       if (response.status == 200) {
-        toast.add({ severity: 'success', summary: 'Éxito', detail: response.msj, life: 3000 });
+        toast.add({ severity: 'success', summary: 'Éxito', detail: 'Dato almacenado correctamente', life: 3000 });
+
 
     } else { 
   
@@ -192,7 +194,8 @@ export function useRestApi()
     try {
       const response = await axios.post(`${url}/cargar-agendamiento`,data)
       if (response.status == 200) {
-        toast.add({ severity: 'success', summary: 'Éxito', detail: response.msj, life: 3000 });
+        toast.add({ severity: 'success', summary: 'Éxito', detail: 'Dato almacenado correctamente', life: 3000 });
+
 
     } else { 
   
