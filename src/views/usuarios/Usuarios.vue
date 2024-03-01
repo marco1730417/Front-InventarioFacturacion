@@ -198,7 +198,7 @@ const initFilters = () => {
                     <div class="field">
                         <label for="name">Número de cédula</label>
                         <InputText id="name" v-model.trim="usuario.identificacion" required="true" autofocus :class="{ 'p-invalid': submitted && !usuario.identificacion }" />
-                        <small class="p-invalid" v-if="submitted && !usuario.identificacion">Name is required.</small>
+                        <small class="p-invalid" v-if="submitted && !usuario.identificacion">Numero de cedula es requerido.</small>
                     </div>
                    <!--  <div class="field">
                         <label for="description">Dirección</label>
