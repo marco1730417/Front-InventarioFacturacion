@@ -4,6 +4,7 @@ import { ref, onMounted, onBeforeMount } from 'vue';
 import { useRestApi } from '@/composables/crud';
 
 const { cargarAgendamiento, datosAgendamiento, calcularMarcaciones, datosReporteMarcaciones, obtenerRegistros,datos } = useRestApi() //Instancia composable Rest
+
 const url = ref('reportes');
 const urlusuarios = ref('usuarios');
 
@@ -81,33 +82,52 @@ const initFilters = () => {
         <div class="col-12">
             <div class="card">
                 <Toast />
-                <Toolbar class="mb-4">
-                    <template v-slot:start>
-                        <div class="my-2">
-                            <div class="card flex justify-content-center">
-                                <Dropdown v-model="selectedAnio" :options="anios" optionLabel="name"
+                
+            <div class="grid p-fluid">
+        <div class="col">
+            <div class="card">
+                <h5>Generación de reporte Horas Extras</h5>
+                <div class="p-fluid grid">
+                    <div class="col-9 md:col-3">
+                        <div class="field">
+                            <label for="inputtext">Elija el Año</label>
+                            <Dropdown v-model="selectedAnio" :options="anios" optionLabel="name"
                                     placeholder="Eliga un año" class="w-full md:w-14rem" />
-                            </div>
                         </div>
-                        <div class="my-2">
-                            <div class="card flex justify-content-center">
-                                <Dropdown v-model="selectedMes" :options="mes" optionLabel="name" placeholder="Eliga un mes"
-                                    class="w-full md:w-14rem" />
-                            </div>
-                        </div>
-                        <div class="my-2">
-                            <div class="card flex justify-content-center">
-                                <Dropdown v-model="selectedUsuario" :options="datos" optionLabel="name" placeholder="Eliga un usuario"
-                                    class="w-full md:w-14rem" />
-                            </div>
-                        </div>
-                    </template>
+                   
+                    </div>
 
-                    <template v-slot:end>
-                        <Button label="Calcular" icon="pi pi-calculator" class="p-button-success" @click="generarReporte" />
-                    </template>
-                </Toolbar>
+                    <div class="col-9 md:col-3">
+                        <div class="field">
+                            <label for="inputmask">Elija el Mes</label>
+                            <Dropdown v-model="selectedMes" :options="mes" optionLabel="name" placeholder="Eliga un mes"
+                                    class="w-full md:w-14rem" />
+                            
+                        </div>
+                
+                    </div>
+                    <div class="col-9 md:col-3">
+                        <div class="field">
+                            <label for="inputmask">Elija el Usuario</label>
+                            <Dropdown v-model="selectedUsuario" :options="datos" optionLabel="name" placeholder="Eliga un usuario"
 
+class="w-full md:w-14rem" />      
+                        </div>
+                
+                    </div>
+                    <div class="col-9 md:col-3">
+                        <div class="field">
+                            <label for="inputmask">Acciones</label>
+                            <Button label="Consultar" icon="pi pi-calculator" class="p-button-success" @click="generarReporte" />
+              
+                        </div>
+                
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+          
                 <DataTable ref="dt" :value="datosReporteMarcaciones" dataKey="id" :paginator="true" :rows="10" :filters="filters"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     :rowsPerPageOptions="[5, 10, 25]"
@@ -172,12 +192,12 @@ const initFilters = () => {
 
 
 
-                    <Column headerStyle="min-width:10rem;" header="ACCIONES ">
+               <!--      <Column headerStyle="min-width:10rem;" header="ACCIONES ">
                         <template #body="slotProps">
                             <Button icon="pi pi-sync" class="p-button-rounded p-button-success mr-2"
                                 @click="cambiarEstado(slotProps.data.id)" />
                         </template>
-                    </Column>
+                    </Column> -->
                 </DataTable>
 
 

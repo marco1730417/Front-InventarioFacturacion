@@ -50,8 +50,8 @@ const model = ref([
         label: 'Reportes',
         items: [
             { label: 'Horas Extras', icon: 'pi pi-fw pi-clock', to: '/facturacion/horasextras' },
-      /*       { label: 'Asistencia', icon: 'pi pi-fw pi-user', to: '/facturacion/asistencia'  }
-       */  ]
+             { label: 'Asistencia', icon: 'pi pi-fw pi-user', to: '/facturacion/asistencia'  }
+         ]
     },
  /*    {
         label: 'Prime Blocks',

@@ -69,39 +69,91 @@ const initFilters = () => {
     <div class="grid">
         <div class="col-12 lg:col-12">
             <Toast />
-           
-            <Toolbar class="mb-4">
-             
-                    <template v-slot:start>
-                   
-                        <div class="my-6">
-                            <div class="card flex justify-content-center">
-                                <Dropdown v-model="selectedUsuario" :options="datos" optionLabel="name" placeholder="Eliga un usuario"
+            <div class="card">
+                <h5>Ingreso Manual para Hora de Ingreso</h5>
+            <div class="p-fluid grid">
+                    <div class="col-9 md:col-3">
+                        <div class="field">
+                            <label for="inputtext">Elija el Usuario</label>
+                            <Dropdown v-model="selectedUsuario" :options="datos" optionLabel="name" placeholder="Eliga un usuario"
                                     class="w-full md:w-14rem" />
-                            </div>
                         </div>
-                        <div class="my-2">
-                            <div class="card flex justify-content-center">
-                                <input type="date" v-model="fecha" id="appt" name="appt" min="09:00" max="18:00" required />
+                   
+                    </div>
 
-                            </div>
+                    <div class="col-9 md:col-3">
+                        <div class="field">
+                            <label for="inputmask">Selecione una fecha</label>
+                             <input type="date" v-model="fecha" id="appt" name="appt" min="09:00" max="18:00" required />
+ 
+                         <!--    <Calendar v-model="fecha" />
+ -->
                         </div>
-                        <div class="my-2">
-                            <div class="card flex justify-content-center">
-
-                                <input type="time" v-model="time" id="appt" name="appt" min="09:00" max="18:00" required />
-                            </div>
-                        </div>
-                    </template>
-
-                    <template v-slot:end>
-                        <Button label="Guardar Ingreso" icon="pi pi-save" class="p-button-success" @click="GuardarMarcacionIng" />
-                    </template>
-                </Toolbar>
-
                 
+                    </div>
+                    <div class="col-9 md:col-3">
+                        <div class="field">
+                            <label for="inputmask">Escriba una hora</label>
+                           <input type="time" v-model="time" id="appt" name="appt" min="09:00" max="18:00" required />
+                       <!--      <Calendar id="calendar-timeonly" v-model="time" timeOnly />
+                        --> </div>
+                
+                    </div>
+                    <div class="col-9 md:col-3">
+                        <div class="field">
+                            <label for="inputmask">Acciones</label>
+                            <Button label="Guardar" icon="pi pi-save" class="p-button-success" @click="GuardarMarcacionIng" />
+              
+                        </div>
+                
+                    </div>
+                </div>
+            </div>
+  
+                
+            <div class="card">
+                <h5>Ingreso Manual para Hora de Salida</h5>
+          
+            <div class="p-fluid grid">
+                    <div class="col-9 md:col-3">
+                        <div class="field">
+                            <label for="inputtext">Elija el Usuario</label>
+                            <Dropdown v-model="selectedUsuario" :options="datos" optionLabel="name" placeholder="Eliga un usuario"
+                                    class="w-full md:w-14rem" />
+                        </div>
+                   
+                    </div>
 
-                <Toolbar class="mb-4">
+                    <div class="col-9 md:col-3">
+                        <div class="field">
+                            <label for="inputmask">Selecione una fecha</label>
+                             <input type="date" v-model="fechasalida" id="appt" name="appt" min="09:00" max="18:00" required />
+ 
+                         <!--    <Calendar v-model="fecha" />
+ -->
+                        </div>
+                
+                    </div>
+                    <div class="col-9 md:col-3">
+                        <div class="field">
+                            <label for="inputmask">Escriba una hora</label>
+                           <input type="time" v-model="timesalida" id="appt" name="appt" min="09:00" max="18:00" required />
+                       <!--      <Calendar id="calendar-timeonly" v-model="time" timeOnly />
+                        --> </div>
+                
+                    </div>
+                    <div class="col-9 md:col-3">
+                        <div class="field">
+                            <label for="inputmask">Acciones</label>
+                            <Button label="Guardar" icon="pi pi-save" class="p-button-success" @click="GuardarMarcacionSa" />
+              
+                        </div>
+                
+                    </div>
+                </div>
+            </div>
+
+          <!--       <Toolbar class="mb-4">
              
              <template v-slot:start>
             
@@ -128,7 +180,7 @@ const initFilters = () => {
              <template v-slot:end>
                  <Button label="Guardar Salida" icon="pi pi-save" class="p-button-danger" @click="GuardarMarcacionSa" />
              </template>
-         </Toolbar>
+         </Toolbar> -->
 
     </div>
 </div>
