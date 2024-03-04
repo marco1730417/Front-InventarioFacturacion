@@ -14,6 +14,7 @@ const fecha = ref()
 const timesalida = ref()
 const fechasalida = ref()
 const selectedUsuario = ref();
+const selectedUsuarioSalida = ref();
 
 const marcacion = ref({});
 const fecha_inicio = ref(null);
@@ -24,11 +25,11 @@ const submitted = ref(false)
 const usuario = ref(auth.user.id)
 
 
-const dataenviar = ref({ usuario_id: usuario.value })
+const dataenviar = ref({ usuario_id: selectedUsuario })
 dataenviar.value.fecha = fecha
 dataenviar.value.hora = time
 
-const dataenviarsalida = ref({ usuario_id: usuario.value })
+const dataenviarsalida = ref({ usuario_id: selectedUsuarioSalida })
 dataenviarsalida.value.fechasalida = fechasalida
 dataenviarsalida.value.hora_salida = timesalida
 
@@ -118,7 +119,7 @@ const initFilters = () => {
                     <div class="col-9 md:col-3">
                         <div class="field">
                             <label for="inputtext">Elija el Usuario</label>
-                            <Dropdown v-model="selectedUsuario" :options="datos" optionLabel="name" placeholder="Eliga un usuario"
+                            <Dropdown v-model="selectedUsuarioSalida" :options="datos" optionLabel="name" placeholder="Eliga un usuario"
                                     class="w-full md:w-14rem" />
                         </div>
                    
