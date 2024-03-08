@@ -179,14 +179,17 @@ class="w-full md:w-14rem" />
                         <template #body="slotProps">
                             <span class="p-column-title">HE</span>
                     
-                            {{ slotProps.data.tiempo_excedente }}
-
+                            <Badge v-if="slotProps.data.valor_pagar < 0" severity="info"> {{ slotProps.data.tiempo_excedente }}</Badge>
+                           
+                            <span v-if="slotProps.data.valor_pagar >= 0" > {{ slotProps.data.tiempo_excedente }}</span>
+                           
                         </template>
                     </Column>
                     <Column field="direccion" header="PAGO" :sortable="true" headerStyle="width:15%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">PAGO</span>
-                            <span> {{slotProps.data.valor_pagar}}</span>
+                            <span v-if="slotProps.data.valor_pagar >= 0"> $ {{slotProps.data.valor_pagar.toFixed(2)}}</span>
+                            <span title="No aplica" v-if="slotProps.data.valor_pagar < 0"> N/A</span>
                         </template>
                     </Column> 
 
