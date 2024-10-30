@@ -98,7 +98,7 @@ const initFilters = () => {
 
                 <DataTable ref="dt" :value="datosAgendamiento" dataKey="id" :paginator="true" :rows="10" :filters="filters"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                    :rowsPerPageOptions="[5, 10, 25]"
+                    :rowsPerPageOptions="[5, 10, 25,40]"
                     currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"
                     responsiveLayout="scroll">
                     <template #header>

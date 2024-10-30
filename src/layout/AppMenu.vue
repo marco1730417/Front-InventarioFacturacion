@@ -20,6 +20,9 @@ const model = ref([
      */ 
         { label: 'Usuarios', icon: 'pi pi-fw pi-user', to: '/facturacion/usuarios'  },
 
+        { label: 'Empresas', icon: 'pi pi-fw pi-home', to: '/facturacion/empresas'  },
+
+
         { label: 'Marcaciones', icon: 'pi pi-fw pi-clock', to: '/facturacion/marcaciones' },
      
         { label: 'Marcaciones Manual', icon: 'pi pi-fw pi-clock', to: '/facturacion/marcacionesmanual' },
