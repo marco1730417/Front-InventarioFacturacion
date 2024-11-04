@@ -18,6 +18,7 @@ const dt = ref(null);
 const filters = ref({});
 const submitted = ref(false);
 
+const expandedRows = ref([]);
 
 onBeforeMount(() => {
     initFilters();
@@ -138,43 +139,22 @@ const initFilters = () => {
                     </template>
                 </Toolbar>
 
-                <DataTable
-                    ref="dt"
-                    :value="datos"
-                    dataKey="id"
-                    :paginator="true"
-                    :rows="10"
-                    :filters="filters"
+                <DataTable :value="datos" v-model:expandedRows="expandedRows" dataKey="empId" responsiveLayout="scroll">
                  
-                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                    :rowsPerPageOptions="[5, 10, 25]"
-                    currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"
-                    responsiveLayout="scroll"
-                >
-                    <template #header>
-                        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                            <h5 class="m-0">Administración de Empresas</h5>
-                            <span class="block mt-2 md:mt-0 p-input-icon-left">
-                                <i class="pi pi-search" />
-                                <InputText v-model="filters['global'].value" placeholder="Search..." />
-                            </span>
-                        </div>
-                    </template>
-
-                    <Column field="empNombre" header="NOMBRE" :sortable="true" headerStyle="width:25%; min-width:10rem;">
+                    <Column :expander="true" headerStyle="width: 3rem" />
+                    <Column field="name" header="EMPRESA" :sortable="true">
                         <template #body="slotProps">
-                            <span class="p-column-title">NOMBRE</span>
-                            {{ slotProps.data.empNombre }} 
-                      
+                            {{ slotProps.data.empNombre }}
                         </template>
                     </Column>
-                
-                    <Column field="empDescripcion" header="DESCRIPCION" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                 
+                   
+                  <!--   <Column field="empDescripcion" header="DESCRIPCION" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">DESCRIPCION</span>
                             {{ slotProps.data.empDescripcion }}
                         </template>
-                    </Column>
+                    </Column> -->
                     <Column field="empUbicacion" header="UBICACION" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">UBICACION</span>
@@ -183,19 +163,18 @@ const initFilters = () => {
                     </Column>
              
 
-                    <Column field="empCorreo" header="CORREO" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                    <Column field="empCorreo" header="CONTACTOS" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
-                            <span class="p-column-title">CORREO</span>
-                            {{ slotProps.data.empCorreo }}
+                            <span class="p-column-title">CONTACTOS</span>
+                            {{ slotProps.data.empCorreo }} - {{ slotProps.data.empTelefono }}
                         </template>
                     </Column>
-                    <Column field="empTelefono" header="TELEFONO" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                   <!--  <Column field="empCorreo" header="TELEFONO" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">TELEFONO</span>
                             {{ slotProps.data.empTelefono }}
                         </template>
-                    </Column>
-                                   
+                    </Column> -->
                     <Column headerStyle="min-width:10rem;" header="ACCIONES ">
                         <template #body="slotProps">
                             <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="edicionRegistro(slotProps.data)" />
@@ -204,6 +183,40 @@ const initFilters = () => {
                     
                         </template>
                     </Column>
+                    <template #expansion="slotProps">
+                        <div class="p-3">
+                            <h5>Sucursales de  {{ slotProps.data.empNombre }}</h5>
+                            <DataTable :value="slotProps.data.sucursales" responsiveLayout="scroll">
+                                <Column field="id" header="SUCURSAL" :sortable="true">
+                                    <template #body="slotProps">
+                                        {{ slotProps.data.sucNombre }}
+                                    </template>
+                                </Column>
+                                <Column field="id" header="UBICACION" :sortable="true">
+                                    <template #body="slotProps">
+                                        {{ slotProps.data.sucUbicacion }}
+                                    </template>
+                                </Column>
+                               <!--  <Column field="customer" header="Customer" :sortable="true">
+                                    <template #body="slotProps">
+                                        {{ slotProps.data.sucDescripcion }}
+                                    </template>
+                                </Column> -->
+                                <Column field="date" header="CONTACTOS" :sortable="true">
+                                    <template #body="slotProps">
+                                        {{ slotProps.data.sucTelefono }}
+ -       {{ slotProps.data.sucCorreo }}                               </template>
+                                </Column>
+                             
+                              
+                                <Column headerStyle="width:4rem">
+                                    <template #body>
+                                        <Button icon="pi pi-search" />
+                                    </template>
+                                </Column>
+                            </DataTable>
+                        </div>
+                    </template>
                 </DataTable>
 
                 <!-- EMPRESAS -->
@@ -303,4 +316,12 @@ const initFilters = () => {
 
 <style scoped lang="scss">
 @import '@/assets/demo/styles/badges.scss';
+
+::v-deep(.p-datatable-frozen-tbody) {
+    font-weight: bold;
+}
+
+::v-deep(.p-datatable-scrollable .p-frozen-column) {
+    font-weight: bold;
+}
 </style>
