@@ -5,11 +5,15 @@ import { useRestApi } from '@/composables/crud';
 
 const { obtenerRegistros, editarRegistro,  datos,guardarRegistro, eliminarRegistro } = useRestApi() //Instancia composable Rest
 const url = ref('empresas');
+const urlsucursales = ref('sucursales');
+
 
 
 const modalRegistro = ref(false);
+const modalSucursal= ref(false);
 const modalBorrarRegistro = ref(false);
 const empresa = ref({});
+const sucursal = ref({})
 const dt = ref(null);
 const filters = ref({});
 const submitted = ref(false);
@@ -28,6 +32,11 @@ const nuevoRegistro = () => {
     empresa.value = {};
     submitted.value = false;
     modalRegistro.value = true;
+};
+const crearSucursal =() =>{
+    modalSucursal.value = true;
+
+
 };
 
 const ocultarModal = () => {
@@ -60,7 +69,27 @@ const guardareditarRegistro = () => {
         empresa.value = {};
     }
 };
+const guardareditarRegistroSucursal= () => {
 
+
+submitted.value = true;
+if (sucursal.value) {
+    if (sucursal.value.empId) {
+        //Edicion
+        editarRegistro(urlsucursales.value,sucursal.value);
+        obtenerRegistros(url.value);    
+        
+    } else {
+
+        //Creacion
+        guardarRegistro(urlsucursales.value,sucursal.value);
+        obtenerRegistros(url.value);    
+        
+    }
+    modalSucursal.value = false;
+    sucursal.value = {};
+}
+};
 
 const edicionRegistro = (edicionRegistro) => {
     empresa.value = { ...edicionRegistro };
@@ -171,9 +200,13 @@ const initFilters = () => {
                         <template #body="slotProps">
                             <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="edicionRegistro(slotProps.data)" />
                             <Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmarEliminarRegistro(slotProps.data)" />
+                            <Button icon="pi pi-home" class="p-button-rounded p-button-info mt-2" @click="crearSucursal(slotProps.data)" />
+                    
                         </template>
                     </Column>
                 </DataTable>
+
+                <!-- EMPRESAS -->
 
                 <Dialog v-model:visible="modalRegistro" :style="{ width: '750px' }" header="Detalles de Registro" :modal="true" class="p-fluid">
                     <div class="field">
@@ -224,7 +257,44 @@ const initFilters = () => {
                         <Button label="SI" icon="pi pi-check" class="p-button-text" @click="deleteClient(empresa.id)" />
                     </template>
                 </Dialog>
+                
+                <!--   SUCURSALES -->
+                
+                <Dialog v-model:visible="modalSucursal" :style="{ width: '750px' }" header="Agregar Sucursal" :modal="true" class="p-fluid">
+                    <div class="field">
+                        <label for="name">Nombre</label>
+                        <InputText id="name" v-model.trim="sucursal.sucNombre" required="true" autofocus :class="{ 'p-invalid': submitted && !empresa.sucNombre }" />
+                        <small class="p-invalid" v-if="submitted && !empresa.sucNombre">Name is required.</small>
+                    </div>
+           
 
+                    <div class="field">
+                        <label for="name">Descripcion</label>
+                        <InputText id="name" v-model.trim="sucursal.sucDescripcion" required="true" autofocus :class="{ 'p-invalid': submitted && !sucursal.sucDescripcion }" />
+                        <small class="p-invalid" v-if="submitted && !sucursal.sucDescripcion">Numero de cedula es requerido.</small>
+                    </div>
+               
+                    <div class="field">
+                        <label for="name">Ubicacion</label>
+                        <InputText id="name" v-model.trim="sucursal.sucUbicacion" required="true" autofocus :class="{ 'p-invalid': submitted && !sucursal.sucUbicacion }" />
+                        <small class="p-invalid" v-if="submitted && !sucursal.sucUbicacion">Ubicacion es requerido.</small>
+                    </div>
+               
+
+       
+                    <div class="field">
+                        <label for="name">Correo</label>
+                        <InputText id="name" v-model.trim="sucursal.sucCorreo" required="true" autofocus :class="{ 'p-invalid': submitted && !sucursal.sucCorreo }" />
+                        <small class="p-invalid" v-if="submitted && !sucursal.sucCorreo">Correo es requerido.</small>
+                    </div>
+               
+
+                
+                    <template #footer>
+                        <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="ocultarModal" />
+                        <Button label="Save" icon="pi pi-check" class="p-button-text" @click="guardareditarRegistroSucursal" />
+                    </template>
+                </Dialog>
 
             </div>
         </div>
