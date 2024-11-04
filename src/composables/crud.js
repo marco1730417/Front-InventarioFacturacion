@@ -7,6 +7,7 @@ export function useRestApi()
 {
   const toast = useToast();
   const datos = ref(null);
+  const datosIngestas = ref(null);
   const datosId = ref([]);
   const datosMarcaciones = ref([]);
   const datosReporteMarcaciones = ref([]);
@@ -23,6 +24,17 @@ export function useRestApi()
     try {
       const response = await axios.get(`${url}/obtener-registros`)
       datos.value = response.data;
+    } catch (e) {
+      error.value = e
+      toast.add({ severity: 'error', summary: error.value, detail: error, life: 4000 });
+
+    } 
+  }
+  async function obtenerTipoIngestas(url) 
+  {
+    try {
+      const response = await axios.get(`${url}/obtener-tipo-ingestas`)
+      datosIngestas.value = response.data;
     } catch (e) {
       error.value = e
       toast.add({ severity: 'error', summary: error.value, detail: error, life: 4000 });
@@ -261,6 +273,8 @@ export function useRestApi()
     cambiarEstadoAgendamiento,
     datosAgendamiento,
     calcularMarcaciones,
+    obtenerTipoIngestas,
+    datosIngestas,
     datosReporteMarcaciones,
     GuardarMarcacion,
     GuardarMarcacionSalida,
