@@ -13,6 +13,7 @@ const modalRegistro = ref(false);
 const modalSucursal= ref(false);
 const modalBorrarRegistro = ref(false);
 const empresa = ref({});
+const empresaId= ref();
 const sucursal = ref({})
 const dt = ref(null);
 const filters = ref({});
@@ -34,10 +35,10 @@ const nuevoRegistro = () => {
     submitted.value = false;
     modalRegistro.value = true;
 };
-const crearSucursal =() =>{
+const crearSucursal =(empId) =>{
     modalSucursal.value = true;
-
-
+    empresaId.value= empId;
+    sucursal.value.empId= empresaId.value
 };
 
 const ocultarModal = () => {
@@ -75,7 +76,7 @@ const guardareditarRegistroSucursal= () => {
 
 submitted.value = true;
 if (sucursal.value) {
-    if (sucursal.value.empId) {
+    if (sucursal.value.sucId) {
         //Edicion
         editarRegistro(urlsucursales.value,sucursal.value);
         obtenerRegistros(url.value);    
@@ -179,7 +180,7 @@ const initFilters = () => {
                         <template #body="slotProps">
                             <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="edicionRegistro(slotProps.data)" />
                             <Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmarEliminarRegistro(slotProps.data)" />
-                            <Button icon="pi pi-home" class="p-button-rounded p-button-info mt-2" @click="crearSucursal(slotProps.data)" />
+                            <Button icon="pi pi-home" class="p-button-rounded p-button-info mt-2" @click="crearSucursal(slotProps.data.empId)" />
                     
                         </template>
                     </Column>
