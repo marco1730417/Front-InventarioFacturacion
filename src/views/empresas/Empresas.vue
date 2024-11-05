@@ -98,6 +98,13 @@ const edicionRegistro = (edicionRegistro) => {
     empresa.value = { ...edicionRegistro };
     modalRegistro.value = true;
 };
+const edicionRegistroSucursal = (edicionRegistroSucursal) => {
+    sucursal.value = { ...edicionRegistroSucursal };
+
+console.log(sucursal.value);
+
+    modalSucursal.value = true;
+};
 
 const confirmarEliminarRegistro = (edicionRegistro) => {
     empresa.value = edicionRegistro;
@@ -197,30 +204,28 @@ const initFilters = () => {
                             <h5>Sucursales de {{ slotProps.data.empNombre }}</h5>
                             <DataTable :value="slotProps.data.sucursales" responsiveLayout="scroll">
                                 <Column field="id" header="SUCURSAL" :sortable="true">
-                                    <template #body="slotProps">
-                                        {{ slotProps.data.sucNombre }}
+                                    <template #body="sucursalData">
+                                        {{ sucursalData.data.sucNombre }}
                                     </template>
                                 </Column>
                                 <Column field="id" header="UBICACION" :sortable="true">
-                                    <template #body="slotProps">
-                                        {{ slotProps.data.sucUbicacion }}
+                                    <template #body="sucursalData">
+                                        {{ sucursalData.data.sucUbicacion }}
                                     </template>
                                 </Column>
-                                <!--  <Column field="customer" header="Customer" :sortable="true">
-                                    <template #body="slotProps">
-                                        {{ slotProps.data.sucDescripcion }}
-                                    </template>
-                                </Column> -->
+                             
                                 <Column field="date" header="CONTACTOS" :sortable="true">
-                                    <template #body="slotProps">
-                                        {{ slotProps.data.sucTelefono }}
-                                        - {{ slotProps.data.sucCorreo }} </template>
+                                    <template #body="sucursalData">
+                                        {{ sucursalData.data.sucTelefono }}
+                                        - {{ sucursalData.data.sucCorreo }} </template>
                                 </Column>
 
 
                                 <Column headerStyle="width:4rem">
-                                    <template #body>
-                                        <Button icon="pi pi-search" />
+                                    <template #body="sucursalData">
+                                        <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                                        @click="edicionRegistroSucursal(sucursalData.data )" />
+
                                     </template>
                                 </Column>
                             </DataTable>
@@ -270,7 +275,8 @@ const initFilters = () => {
                         
                         <div v-for="(item, index) in datosIngestas" :key="index" class="col-12 md:col-4">
                             <div class="field-checkbox mb-0">
-                                <Checkbox v-if="empresa.empId" id="checkOption1" name="option" :value="item.id" v-model="checkboxValue" />
+                            
+                                 <Checkbox id="checkOption1" name="option" :value="item.id" v-model="checkboxValue" />
                               
                                 <label for="checkOption1"> {{ item.nombre }} </label>
                             </div>
