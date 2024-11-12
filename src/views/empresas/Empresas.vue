@@ -1,6 +1,6 @@
 <script setup>
 import { FilterMatchMode } from 'primevue/api';
-import { ref, onMounted, onBeforeMount } from 'vue';
+import { ref, onMounted, onBeforeMount, warn } from 'vue';
 import { useRestApi } from '@/composables/crud';
 
 const { obtenerRegistros,obtenerTipoIngestas,datosIngestas, editarRegistro, datos, guardarRegistro, eliminarRegistro } = useRestApi() //Instancia composable Rest
@@ -12,10 +12,11 @@ const modalBorrarRegistro = ref(false);
 const empresa = ref({});
 const empresaId = ref();
 const sucursal = ref({})
+
+const checkboxValue = ref([]);
 const dt = ref(null);
 const filters = ref({});
 const radioValue = ref(null);
-const checkboxValue = ref([]);
 const submitted = ref(false);
 
 const expandedRows = ref([]);
@@ -26,6 +27,10 @@ onBeforeMount(() => {
 onMounted(() => {
 
     obtenerRegistros(url.value);
+    // Extrae los IDs de las ingestas asociadas y asígnalos a checkboxValue
+   // checkboxValue.value = datos.value.ingestas.map((ingesta) => ingesta.tipoId);
+   
+ 
     obtenerTipoIngestas(url.value);
 });
 
@@ -49,7 +54,7 @@ const ocultarModal = () => {
 const guardareditarRegistro = () => {
 
     submitted.value = true;
-    if (empresa.value) {
+    if (empresa.value.empCorreo && empresa.value.empNombre.trim() ) {
         if (empresa.value.empId) {
             //Edicion
 
@@ -145,9 +150,6 @@ const initFilters = () => {
                         </div>
                     </template>
 
-                    <template v-slot:end>
-                        <Button label="Exportar" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)" />
-                    </template>
                 </Toolbar>
 
                 <DataTable :value="datos" v-model:expandedRows="expandedRows" dataKey="empId" responsiveLayout="scroll">
@@ -159,15 +161,8 @@ const initFilters = () => {
                         </template>
                     </Column>
 
-
-                    <!--   <Column field="empDescripcion" header="DESCRIPCION" :sortable="true" headerStyle="width:14%; min-width:10rem;">
-                        <template #body="slotProps">
-                            <span class="p-column-title">DESCRIPCION</span>
-                            {{ slotProps.data.empDescripcion }}
-                        </template>
-                    </Column> -->
                     <Column field="empUbicacion" header="UBICACION" :sortable="true"
-                        headerStyle="width:14%; min-width:10rem;">
+                       >
                         <template #body="slotProps">
                             <span class="p-column-title">UBICACION</span>
                             {{ slotProps.data.empUbicacion }}
@@ -176,33 +171,29 @@ const initFilters = () => {
 
 
                     <Column field="empCorreo" header="CONTACTOS" :sortable="true"
-                        headerStyle="width:14%; min-width:10rem;">
+                       >
                         <template #body="slotProps">
                             <span class="p-column-title">CONTACTOS</span>
-                            {{ slotProps.data.empCorreo }} - {{ slotProps.data.empTelefono }}
+                            {{ slotProps.data.empCorreo }} <br>  {{ slotProps.data.empTelefono }}
                         </template>
                     </Column>
-                    <!--  <Column field="empCorreo" header="TELEFONO" :sortable="true" headerStyle="width:14%; min-width:10rem;">
-                        <template #body="slotProps">
-                            <span class="p-column-title">TELEFONO</span>
-                            {{ slotProps.data.empTelefono }}
-                        </template>
-                    </Column> -->
+                 
                     <Column headerStyle="min-width:10rem;" header="ACCIONES ">
                         <template #body="slotProps">
-                            <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                            <Button title="Editar empresa" icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
                                 @click="edicionRegistro(slotProps.data)" />
-                            <Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2"
-                                @click="confirmarEliminarRegistro(slotProps.data)" />
-                            <Button icon="pi pi-home" class="p-button-rounded p-button-info mt-2"
+                
+                            <Button title="Agregar sucursal" icon="pi pi-home" class="p-button-rounded p-button-info mt-2"
                                 @click="crearSucursal(slotProps.data.empId)" />
 
                         </template>
                     </Column>
                     <template #expansion="slotProps">
                         <div class="p-3">
-                            <h5>Sucursales de {{ slotProps.data.empNombre }}</h5>
+                            <h6 class="text-center"><strong>SUCURSALES -  {{ slotProps.data.empNombre }}</strong> </h6>
                             <DataTable :value="slotProps.data.sucursales" responsiveLayout="scroll">
+                                <template #empty> Ninguna sucursal asociada. </template>
+
                                 <Column field="id" header="SUCURSAL" :sortable="true">
                                     <template #body="sucursalData">
                                         {{ sucursalData.data.sucNombre }}
@@ -216,7 +207,7 @@ const initFilters = () => {
                              
                                 <Column field="date" header="CONTACTOS" :sortable="true">
                                     <template #body="sucursalData">
-                                        {{ sucursalData.data.sucTelefono }}
+                                        {{ sucursalData.data.sucTelefono }} <br>
                                         - {{ sucursalData.data.sucCorreo }} </template>
                                 </Column>
 
@@ -235,33 +226,21 @@ const initFilters = () => {
 
                 <!-- EMPRESAS -->
 
-                <Dialog v-model:visible="modalRegistro" :style="{ width: '750px' }" header="Detalles de Registro"
+                <Dialog v-model:visible="modalRegistro" :style="{ width: '750px' }" header="Nueva Empresa"
                     :modal="true" class="p-fluid">
                     <div class="field">
                         <label for="name">Nombre</label>
-                        <InputText id="name" v-model.trim="empresa.empNombre" required="true" autofocus
-                            :class="{ 'p-invalid': submitted && !empresa.empNombre }" />
-                        <small class="p-invalid" v-if="submitted && !empresa.empNombre">Name is required.</small>
+                  
+                        <InputText id="name" v-model.trim="empresa.empNombre" required="true" autofocus :class="{ 'p-invalid': submitted && !empresa.empNombre }" />
+                        <small class="p-invalid" v-if="submitted && !empresa.empNombre">Nombre es requerido.</small>                    
                     </div>
 
-
-                    <div class="field">
-                        <label for="name">Descripcion</label>
-                        <InputText id="name" v-model.trim="empresa.empDescripcion" required="true" autofocus
-                            :class="{ 'p-invalid': submitted && !empresa.empDescripcion }" />
-                        <small class="p-invalid" v-if="submitted && !empresa.empDescripcion">Numero de cedula es
-                            requerido.</small>
-                    </div>
 
                     <div class="field">
                         <label for="name">Ubicacion</label>
-                        <InputText id="name" v-model.trim="empresa.empUbicacion" required="true" autofocus
-                            :class="{ 'p-invalid': submitted && !empresa.empUbicacion }" />
-                        <small class="p-invalid" v-if="submitted && !empresa.empUbicacion">Ubicacion es
-                            requerido.</small>
+                        <InputText id="name" v-model.trim="empresa.empUbicacion"
+                            />
                     </div>
-
-
 
                     <div class="field">
                         <label for="name">Correo</label>
@@ -270,20 +249,34 @@ const initFilters = () => {
                         <small class="p-invalid" v-if="submitted && !empresa.empCorreo">Correo es requerido.</small>
                     </div>
 
+                    
+                    <div class="field">
+                        <label for="name">Teléfono</label>
+                        <InputText id="name" v-model.trim="empresa.empTelefono" />
+                    </div>
+
                     <h5>Tipos de Ingesta</h5>
-                    <div class="grid">
+             
+                   <div class="grid">
                         
                         <div v-for="(item, index) in datosIngestas" :key="index" class="col-12 md:col-4">
                             <div class="field-checkbox mb-0">
                             
-                                 <Checkbox id="checkOption1" name="option" :value="item.id" v-model="checkboxValue" />
+                                 <Checkbox id="checkOption1" name="option"
+                                 
+                                  :class="{ 'p-invalid': submitted && checkboxValue.length == 0 }"
+
+                                 :value="item.id" v-model="checkboxValue" />
                               
                                 <label for="checkOption1"> {{ item.nombre }} </label>
                             </div>
+                        
+                           
                         </div>
-                    </div>
 
+                        <small class="p-invalid" v-if="submitted && checkboxValue.length == 0">Debe elegir al menos una ingesta.</small>
 
+                    </div> 
 
                     <template #footer>
                         <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="ocultarModal" />
