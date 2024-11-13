@@ -55,6 +55,15 @@ const router = createRouter({
                     meta: { authorize: Role.SuperAdministrador},
                     component: () => import('@/views/marcacionesmanual/MarcacionesManual.vue')
                 },
+
+                {
+                    path: '/facturacion/registro-ventas',
+                    name: 'registro-ventas',
+                    
+                    meta: { authorize: Role.SuperAdministrador},
+                    component: () => import('@/views/ventas/RegistroVentas.vue')
+                },
+
                 {
                     path: '/facturacion/agendamiento',
                     name: 'agendamiento',

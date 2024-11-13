@@ -27,7 +27,8 @@ const model = ref([
      
         { label: 'Marcaciones Manual', icon: 'pi pi-fw pi-clock', to: '/facturacion/marcacionesmanual' },
      
-
+        { label: 'Registro de Ventas', icon: 'pi pi-fw pi-dollar', to: '/facturacion/registro-ventas' },
+     
         { label: 'Agendamiento', icon: 'pi pi-fw pi-calendar', to: '/facturacion/agendamiento' },
      
     

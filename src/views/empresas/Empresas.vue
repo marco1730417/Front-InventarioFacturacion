@@ -18,7 +18,7 @@ const dt = ref(null);
 const filters = ref({});
 const radioValue = ref(null);
 const submitted = ref(false);
-
+const selectedIds=ref([])
 const expandedRows = ref([]);
 
 onBeforeMount(() => {
@@ -48,6 +48,7 @@ const crearSucursal = (empId) => {
 
 const ocultarModal = () => {
     modalRegistro.value = false;
+    modalSucursal.value = false;
     submitted.value = false;
 };
 
@@ -58,7 +59,7 @@ const guardareditarRegistro = () => {
         if (empresa.value.empId) {
             //Edicion
 
-            empresa.value.ingestas= checkboxValue.value
+            empresa.value.ingestas= selectedIds.value
 
             editarRegistro(url.value, empresa.value);
 
@@ -66,7 +67,7 @@ const guardareditarRegistro = () => {
 
         } else {
 
-            empresa.value.ingestas= checkboxValue.value
+            empresa.value.ingestas= selectedIds.value
             //Creacion
             guardarRegistro(url.value, empresa.value);
 
@@ -100,7 +101,13 @@ const guardareditarRegistroSucursal = () => {
 };
 
 const edicionRegistro = (edicionRegistro) => {
+
     empresa.value = { ...edicionRegistro };
+
+    checkboxValue.value = empresa.value.ingestas || []; // Populate checkbox selections
+    
+    selectedIds.value = checkboxValue.value.map(item => item.tipoId);
+
     modalRegistro.value = true;
 };
 const edicionRegistroSucursal = (edicionRegistroSucursal) => {
@@ -231,6 +238,8 @@ const initFilters = () => {
                     <div class="field">
                         <label for="name">Nombre</label>
                   
+                   
+
                         <InputText id="name" v-model.trim="empresa.empNombre" required="true" autofocus :class="{ 'p-invalid': submitted && !empresa.empNombre }" />
                         <small class="p-invalid" v-if="submitted && !empresa.empNombre">Nombre es requerido.</small>                    
                     </div>
@@ -256,27 +265,21 @@ const initFilters = () => {
                     </div>
 
                     <h5>Tipos de Ingesta</h5>
-             
+
+              
                    <div class="grid">
                         
+                  
                         <div v-for="(item, index) in datosIngestas" :key="index" class="col-12 md:col-4">
                             <div class="field-checkbox mb-0">
-                            
-                                 <Checkbox id="checkOption1" name="option"
-                                 
-                                  :class="{ 'p-invalid': submitted && checkboxValue.length == 0 }"
-
-                                 :value="item.id" v-model="checkboxValue" />
-                              
-                                <label for="checkOption1"> {{ item.nombre }} </label>
+                                <Checkbox :id="`checkOption${index}`" name="option"
+                                          :class="{ 'p-invalid': submitted && selectedIds.length === 0 }"
+                                          :value="item.id" v-model="selectedIds" />
+                                <label :for="`checkOption${index}`"> {{ item.nombre }} </label>
                             </div>
-                        
-                           
-                        </div>
-
                         <small class="p-invalid" v-if="submitted && checkboxValue.length == 0">Debe elegir al menos una ingesta.</small>
 
-                    </div> 
+                    </div> </div> 
 
                     <template #footer>
                         <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="ocultarModal" />
