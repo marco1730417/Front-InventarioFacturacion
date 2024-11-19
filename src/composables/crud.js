@@ -11,7 +11,7 @@ export function useRestApi()
   const datosId = ref([]);
   const datosMarcaciones = ref([]);
   const datosReporteMarcaciones = ref([]);
-  
+  const datos_ventas = ref(null)
   const datosAgendamiento = ref([]);
 
   
@@ -24,6 +24,28 @@ export function useRestApi()
     try {
       const response = await axios.get(`${url}/obtener-registros`)
       datos.value = response.data;
+    } catch (e) {
+      error.value = e
+      toast.add({ severity: 'error', summary: error.value, detail: error, life: 4000 });
+
+    } 
+  }
+  async function obtenerRegistrosVentas(url,fecha) 
+  {
+    try {
+      const response = await axios.get(`${url}/obtener-registros/${fecha}`)
+      datos_ventas.value = response.data;
+    } catch (e) {
+      error.value = e
+      toast.add({ severity: 'error', summary: error.value, detail: error, life: 4000 });
+
+    } 
+  }
+  async function obtenerRegistrosVenta(url,fecha) 
+  {
+    try {
+      const response = await axios.get(`${url}/obtener-registros/${fecha}`)
+      datos.value = response.data.data;
     } catch (e) {
       error.value = e
       toast.add({ severity: 'error', summary: error.value, detail: error, life: 4000 });
@@ -260,6 +282,9 @@ export function useRestApi()
     datosId,
     datosMarcaciones,
     datosIdAuxiliar,
+    obtenerRegistrosVentas,
+    obtenerRegistrosVenta,
+    datos_ventas,
     obtenerRegistros,
     obtenerRegistrosAgendamiento,
     guardarRegistro,
