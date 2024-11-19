@@ -33,14 +33,12 @@ onBeforeMount(() => {
     initFilters();
 });
 
-watch(calendarValue, (newValue, oldValue) => {
-  // fires on nested property mutations
-  // Note: `newValue` will be equal to `oldValue` here
-  // because they both point to the same object!
+ watch(calendarValue, (newValue, oldValue) => {
+  
+    if(datos_ventas)
+    datos_ventas.value={}
 
-  datos_ventas.value={}
-
-})
+}) 
 
 onMounted(() => {
 
@@ -259,7 +257,7 @@ const initFilters = () => {
                         <h5>Calendar</h5>
                         <Calendar :showIcon="true" :showButtonBar="true" v-model="calendarValue"></Calendar>
                         <Button style="float: right;" @click="cargarInformacion" label="Buscar" class="p-button-success mr-2 mb-2" />
-                        <Button v-if="datos_ventas.length>0" label="General" style="float: right" class="p-button-info mr-2"
+                        <Button v-if="datos_ventas" label="General" style="float: right" class="p-button-info mr-2"
                                 @click="nuevoRegistro" />
                                 
                         <ToggleButton v-model="idFrozen" onIcon="pi pi-lock" offIcon="pi pi-lock-open" onLabel="Unfreeze Id" offLabel="Freeze Id" style="width: 10rem" />
