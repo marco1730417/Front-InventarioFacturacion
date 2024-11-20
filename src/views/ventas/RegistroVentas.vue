@@ -4,7 +4,7 @@ import { ref, onMounted, onBeforeMount, watch } from 'vue';
 import { useRestApi } from '@/composables/crud';
 import { format } from 'date-fns';
 
-const { obtenerRegistrosVentas,guardarDetalleVenta, obtenerIngestasEmpresa, ingestasEmpresa, obtenerRegistrosVenta, lobtenerRegistros, datos_ventas, obtenerTipoIngestas, datosIngestas, editarRegistro, datos, guardarRegistro, eliminarRegistro } = useRestApi() //Instancia composable Rest
+const { obtenerRegistrosVentas, guardarDetalleVenta, obtenerIngestasEmpresa, ingestasEmpresa, obtenerRegistrosVenta, lobtenerRegistros, datos_ventas, obtenerTipoIngestas, datosIngestas, editarRegistro, datos, guardarRegistro, eliminarRegistro } = useRestApi() //Instancia composable Rest
 const url = ref('ventas');
 const urlsucursales = ref('sucursales');
 const modalRegistro = ref(false);
@@ -19,8 +19,8 @@ const venta = ref({
 });
 const empresaId = ref();
 const sucursalId = ref({})
-const cantidades= ref({}); // Cantidades ingresadas para cada ingesta
-       
+const cantidades = ref({}); // Cantidades ingresadas para cada ingesta
+
 const checkboxValue = ref([]);
 const dt = ref(null);
 const filters = ref({});
@@ -39,27 +39,14 @@ onBeforeMount(() => {
 
 watch(calendarValue, (newValue, oldValue) => {
 
-    if (datos_ventas)
-        datos_ventas.value = {}
+    if (datos_ventas){ 
+        datos_ventas.value = {} }
+
+        const formattedDate = format(newValue, "yyyy-MM-dd");
+        obtenerRegistrosVentas(urlsucursales.value, formattedDate);
+        obtenerRegistrosVenta(url.value, formattedDate);
 
 })
-
-onMounted(() => {
-
-    /*    obtenerRegistrosVentas(urlsucursales.value,calendarValue.value); */
-    // Extrae los IDs de las ingestas asociadas y asígnalos a checkboxValue
-    // checkboxValue.value = datos.value.ingestas.map((ingesta) => ingesta.tipoId);
-
-    /* 
-       obtenerTipoIngestas(url.value); */
-});
-
-const cargarInformacion = () => {
-    const formattedDate = format(calendarValue.value, "yyyy-MM-dd");
-    obtenerRegistrosVentas(urlsucursales.value, formattedDate);
-    obtenerRegistrosVenta(url.value, formattedDate);
-
-}
 
 
 const nuevoRegistro = () => {
@@ -78,9 +65,8 @@ const nuevoRegistro = () => {
 };
 const nuevoDetalleVenta = (datos) => {
 
-    /*     console.log(datos.empId);
-         */
-         sucursalId.value=datos.sucId;
+
+    sucursalId.value = datos.sucId;
     obtenerIngestasEmpresa(url.value, datos.empId)
 
     /* if (datos.value) {
@@ -101,7 +87,7 @@ const ocultarModal = () => {
     modalDetalleVenta.value = false;
     modalSucursal.value = false;
     submitted.value = false;
-    cantidades.value= {}
+    cantidades.value = {}
 };
 
 const guardareditarRegistro = () => {
@@ -135,18 +121,21 @@ const guardareditarRegistro = () => {
 const guardarDetalle = () => {
     const formattedDate = format(calendarValue.value, "yyyy-MM-dd");
 
-    const data={
-        cantidades:cantidades.value,
-        sucId:sucursalId.value,
-        fecha:formattedDate
+    const data = {
+        cantidades: cantidades.value,
+        sucId: sucursalId.value,
+        fecha: formattedDate
     }
 
-guardarDetalleVenta(url.value,data)
+    guardarDetalleVenta(url.value, data)
 
-submitted.value = true;
-modalRegistro.value = false;
-venta.value = {};
+    submitted.value = true;
+    modalDetalleVenta.value = false;
+    venta.value = {};
 
+    obtenerRegistrosVentas(urlsucursales.value, formattedDate);
+    obtenerRegistrosVenta(url.value, formattedDate);
+    
 };
 
 
@@ -239,25 +228,41 @@ const initFilters = () => {
 
                         <h5>Calendar</h5>
                         <Calendar :showIcon="true" :showButtonBar="true" v-model="calendarValue"></Calendar>
-                        <Button style="float: right;" @click="cargarInformacion" label="Buscar"
-                            class="p-button-success mr-2 mb-2" />
-                        <Button v-if="datos_ventas" label="General" style="float: right" class="p-button-info mr-2"
+                       
+                        <Button v-if="datos_ventas" label="Gastos" style="float: right" class="p-button-success mr-2"
                             @click="nuevoRegistro" />
 
                         <ToggleButton v-model="idFrozen" onIcon="pi pi-lock" offIcon="pi pi-lock-open"
                             onLabel="Unfreeze Id" offLabel="Freeze Id" style="width: 10rem" />
 
-                        <DataTable :value="datos_ventas" :scrollable="true" scrollHeight="400px" :loading="loading2"
+                        <DataTable v-if="datos_ventas" :value="datos_ventas" :scrollable="true" scrollHeight="400px" :loading="loading2"
                             scrollDirection="both" class="mt-3">
                             <Column field="sucursal_nombre" header="Empresa" :style="{ width: '150px' }" frozen>
                             </Column>
-                            <Column headerStyle="min-width:10rem;" header="ACCIONES ">
+                        
+
+                            
+                    <Column field="empUbicventasacion" header="Ventas" :sortable="true"
+                    >
+                     <template #body="slotProps">
+                         <span class="p-column-title">Ingestas</span>
+                        
+                         <ul class="list-group">
+                            <li v-for="(item, index) in  slotProps.data.ventas" :key="index" 
+                            class="list-group-item d-flex justify-content-between align-items-center" >
+                           <span v-if="item.venId!=null"> {{item.nombre}} -  </span>   
+                              <span v-if="item.venId!=null" class="badge badge-primary badge-pill">   {{item.ingCantidad}}</span>
+                            </li>
+                          </ul>
+
+                     </template>
+                 </Column>
+
+                            <Column header="Acciones ">
                                 <template #body="slotProps">
                                     <Button title="Editar venta" icon="pi pi-pencil"
                                         class="p-button-rounded p-button-success mr-2"
                                         @click="nuevoDetalleVenta(slotProps.data)" />
-
-
                                 </template>
                             </Column>
                         </DataTable>
@@ -271,8 +276,6 @@ const initFilters = () => {
                             :modal="true" class="p-fluid">
                             <div class="field">
                                 <label for="name">Mano de Obra</label>
-                                <!--  <InputText id="name" v-model.trim="venta.venManoObra" required="true" autofocus :class="{ 'p-invalid': submitted && !venta.venManoObra }" />
-                   -->
 
                                 <div class="p-inputgroup">
                                     <InputText v-model.trim="venta.venManoObra" required="true" autofocus
@@ -288,9 +291,7 @@ const initFilters = () => {
 
                             <div class="field">
                                 <label for="name">Materia Prima</label>
-                                <!--   <InputText id="name" v-model.trim="venta.venMateriaPrima" required="true" autofocus :class="{ 'p-invalid': submitted && !venta.venMateriaPrima }" />
-                   -->
-
+                
                                 <div class="p-inputgroup">
                                     <InputText v-model.trim="venta.venMateriaPrima" required="true" autofocus
                                         :class="{ 'p-invalid': submitted && !venta.venMateriaPrima }"
@@ -305,9 +306,7 @@ const initFilters = () => {
 
                             <div class="field">
                                 <label for="name">Empaques</label>
-                                <!--     <InputText id="name" v-model.trim="venta.venEmpaques" required="true" autofocus :class="{ 'p-invalid': submitted && !venta.venEmpaques }" />
-                 -->
-
+                 
                                 <div class="p-inputgroup">
                                     <InputText v-model.trim="venta.venEmpaques" required="true" autofocus
                                         :class="{ 'p-invalid': submitted && !venta.venEmpaques }" placeholder="Price" />
@@ -321,8 +320,7 @@ const initFilters = () => {
 
                             <div class="field">
                                 <label for="name">Observacion</label>
-                                <!--    <InputText id="name" v-model.trim="venta.venEmpaques" required="true" autofocus :class="{ 'p-invalid': submitted && !venta.venEmpaques }" />
-                   -->
+                 
                                 <Textarea v-model.trim="venta.venObservacion" id="venObservacion" rows="2" />
 
                             </div>
@@ -337,33 +335,29 @@ const initFilters = () => {
 
                         <!-- DETALLE VENTA -->
                         <Dialog v-model:visible="modalDetalleVenta" :style="{ width: '500px' }" header="Generales"
-                        :modal="true" class="p-fluid">
-                        <div class="field">
+                            :modal="true" class="p-fluid">
+                            <div class="field">
 
-                            <div class="grid">
+                                <div class="grid">
 
-                                <div v-for="(item, index) in ingestasEmpresa" :key="index" class="col-12 md:col-6">
-                                    <div class="field">
-                                        <!-- Nombre de la ingesta -->
-                                        <label :for="`inputCantidad${index}`" class="block">{{ item.nombre }}</label>
-                                        <!-- Input para la cantidad -->
-                                        <InputNumber 
-                                            v-model="cantidades[item.tipoId]" 
-                                            :id="`inputCantidad${index}`"
-                                            :placeholder="`Cantidad de ${item.nombre}`"
-                                            class="w-full"
-                                            :min="0"
-                                        />
+                                    <div v-for="(item, index) in ingestasEmpresa" :key="index" class="col-12 md:col-6">
+                                        <div class="field">
+                                            <!-- Nombre de la ingesta -->
+                                            <label :for="`inputCantidad${index}`" class="block">{{ item.nombre
+                                                }}</label>
+                                            <!-- Input para la cantidad -->
+                                            <InputNumber v-model="cantidades[item.tipoId]" :id="`inputCantidad${index}`"
+                                                :placeholder="`Cantidad de ${item.nombre}`" class="w-full" :min="0" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <template #footer>
-                            <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="ocultarModal" />
-                            <Button label="Save" icon="pi pi-check" class="p-button-text" @click="guardarDetalle" />
-                        </template>
-                    </Dialog>
-                    
+                            <template #footer>
+                                <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="ocultarModal" />
+                                <Button label="Save" icon="pi pi-check" class="p-button-text" @click="guardarDetalle" />
+                            </template>
+                        </Dialog>
+
 
                     </div>
                 </div>
