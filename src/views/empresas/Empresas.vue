@@ -279,7 +279,10 @@ const initFilters = () => {
                             </div>
                         <small class="p-invalid" v-if="submitted && checkboxValue.length == 0">Debe elegir al menos una ingesta.</small>
 
-                    </div> </div> 
+                    </div>
+                
+                
+                </div> 
 
                     <template #footer>
                         <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="ocultarModal" />

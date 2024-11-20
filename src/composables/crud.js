@@ -8,6 +8,7 @@ export function useRestApi()
   const toast = useToast();
   const datos = ref(null);
   const datosIngestas = ref(null);
+  const ingestasEmpresa = ref(null);
   const datosId = ref([]);
   const datosMarcaciones = ref([]);
   const datosReporteMarcaciones = ref([]);
@@ -30,6 +31,19 @@ export function useRestApi()
 
     } 
   }
+  async function obtenerIngestasEmpresa(url,empId) 
+  {
+    try {
+     
+      const response = await axios.get(`${url}/obtener-ingestas-empresa/${empId}`)
+      ingestasEmpresa.value = response.data.data;
+    } catch (e) {
+      error.value = e
+      toast.add({ severity: 'error', summary: error.value, detail: error, life: 4000 });
+
+    } 
+  }
+
   async function obtenerRegistrosVentas(url,fecha) 
   {
     try {
@@ -142,6 +156,23 @@ export function useRestApi()
   {
     try {
       const response = await axios.post(`${url}/guardar-registro`,data)
+      if (response.status == 200) {
+        toast.add({ severity: 'success', summary: 'Éxito', detail: response.msj, life: 3000 });
+
+    } else { 
+  
+      toast.add({ severity: 'error', summary: 'Error', detail: response.msj, life: 3000 });
+  
+  }
+    } catch (error) {
+     
+    }
+  }
+
+  async function guardarDetalleVenta(url,data) 
+  {
+    try {
+      const response = await axios.post(`${url}/guardar-detalle-venta`,data)
       if (response.status == 200) {
         toast.add({ severity: 'success', summary: 'Éxito', detail: response.msj, life: 3000 });
 
@@ -284,9 +315,11 @@ export function useRestApi()
     datosIdAuxiliar,
     obtenerRegistrosVentas,
     obtenerRegistrosVenta,
+    guardarDetalleVenta,
     datos_ventas,
     obtenerRegistros,
     obtenerRegistrosAgendamiento,
+    obtenerIngestasEmpresa,
     guardarRegistro,
     editarRegistro,
     eliminarRegistro,
@@ -300,6 +333,7 @@ export function useRestApi()
     calcularMarcaciones,
     obtenerTipoIngestas,
     datosIngestas,
+    ingestasEmpresa,
     datosReporteMarcaciones,
     GuardarMarcacion,
     GuardarMarcacionSalida,
