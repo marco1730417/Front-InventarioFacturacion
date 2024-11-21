@@ -39,12 +39,13 @@ onBeforeMount(() => {
 
 watch(calendarValue, (newValue, oldValue) => {
 
-    if (datos_ventas){ 
-        datos_ventas.value = {} }
+    if (datos_ventas) {
+        datos_ventas.value = {}
+    }
 
-        const formattedDate = format(newValue, "yyyy-MM-dd");
-        obtenerRegistrosVentas(urlsucursales.value, formattedDate);
-        obtenerRegistrosVenta(url.value, formattedDate);
+    const formattedDate = format(newValue, "yyyy-MM-dd");
+    obtenerRegistrosVentas(urlsucursales.value, formattedDate);
+    obtenerRegistrosVenta(url.value, formattedDate);
 
 })
 
@@ -63,24 +64,44 @@ const nuevoRegistro = () => {
     submitted.value = false;
     modalRegistro.value = true;
 };
-const nuevoDetalleVenta = (datos) => {
-
+/* const nuevoDetalleVenta = (datos) => {
 
     sucursalId.value = datos.sucId;
-    obtenerIngestasEmpresa(url.value, datos.empId)
 
-    /* if (datos.value) {
-        venta.value = datos.value;
-        submitted.value = false;
-        modalRegistro.value = true;
-    } else {
-        console.error("Datos no definidos. Verifica el origen de datos.");
-        venta.value={}
-    } */
+    
+    obtenerIngestasEmpresa(url.value, datos.empId)
 
     submitted.value = false;
     modalDetalleVenta.value = true;
-};
+}; */
+
+const nuevoDetalleVenta = (datos) => {
+            // Inicializa las cantidades
+
+            sucursalId.value = datos.sucId;
+
+            
+
+            obtenerIngestasEmpresa(url.value, datos.empId)
+
+           // console.log(ingestasEmpresa);
+            
+
+            cantidades.value = {};
+
+            if (datos.ventas && datos.ventas.length > 0) {
+                console.log("entra");
+                
+                datos.ventas.forEach((venta) => {
+                    cantidades.value[venta.tipoId] = venta.ingCantidad;
+                });
+            }  else {
+                console.log("no entra");
+                
+            }
+            // Mostrar el modal
+            modalDetalleVenta.value = true;
+        };
 
 const ocultarModal = () => {
     modalRegistro.value = false;
@@ -135,7 +156,7 @@ const guardarDetalle = () => {
 
     obtenerRegistrosVentas(urlsucursales.value, formattedDate);
     obtenerRegistrosVenta(url.value, formattedDate);
-    
+
 };
 
 
@@ -228,35 +249,49 @@ const initFilters = () => {
 
                         <h5>Calendar</h5>
                         <Calendar :showIcon="true" :showButtonBar="true" v-model="calendarValue"></Calendar>
-                       
+
                         <Button v-if="datos_ventas" label="Gastos" style="float: right" class="p-button-success mr-2"
                             @click="nuevoRegistro" />
 
                         <ToggleButton v-model="idFrozen" onIcon="pi pi-lock" offIcon="pi pi-lock-open"
                             onLabel="Unfreeze Id" offLabel="Freeze Id" style="width: 10rem" />
 
-                        <DataTable v-if="datos_ventas" :value="datos_ventas" :scrollable="true" scrollHeight="400px" :loading="loading2"
-                            scrollDirection="both" class="mt-3">
+                        <DataTable v-if="datos_ventas" :value="datos_ventas" :scrollable="true" scrollHeight="400px"
+                            :loading="loading2" scrollDirection="both" class="mt-3">
                             <Column field="sucursal_nombre" header="Empresa" :style="{ width: '150px' }" frozen>
                             </Column>
-                        
 
-                            
-                    <Column field="empUbicventasacion" header="Ventas" :sortable="true"
-                    >
-                     <template #body="slotProps">
-                         <span class="p-column-title">Ingestas</span>
-                        
-                         <ul class="list-group">
-                            <li v-for="(item, index) in  slotProps.data.ventas" :key="index" 
-                            class="list-group-item d-flex justify-content-between align-items-center" >
-                           <span v-if="item.venId!=null"> {{item.nombre}} -  </span>   
-                              <span v-if="item.venId!=null" class="badge badge-primary badge-pill">   {{item.ingCantidad}}</span>
-                            </li>
-                          </ul>
 
-                     </template>
-                 </Column>
+
+                            <Column field="empUbicventasacion" header="Ventas" :sortable="true">
+                                <template #body="slotProps">
+                                    <span class="p-column-title">Ingestas</span>
+
+                                    <DataTable :value="slotProps.data.ventas" :scrollable="true" scrollHeight="400px"
+                                        :loading="loading2" scrollDirection="both" class="mt-3">
+
+                                        <Column field="nombre" header="Ingesta" :sortable="true">
+                                            <template #body="slotProps">
+                                                <span class="p-column-title">Tipo Ingesta</span>
+                                                <span v-if="slotProps.data.venId != null"> {{ slotProps.data.nombre }}
+                                                </span>
+                                            </template>
+                                        </Column>
+
+
+                                        <Column field="ingCantidad" header="Cantidad" :sortable="true">
+                                            <template #body="slotProps">
+                                                <span class="p-column-title">Cantidad</span>
+                                                <span v-if="slotProps.data.venId != null"> {{ slotProps.data.ingCantidad
+                                                    }} </span>
+                                            </template>
+                                        </Column>
+
+
+                                    </DataTable>
+
+                                </template>
+                            </Column>
 
                             <Column header="Acciones ">
                                 <template #body="slotProps">
@@ -291,7 +326,7 @@ const initFilters = () => {
 
                             <div class="field">
                                 <label for="name">Materia Prima</label>
-                
+
                                 <div class="p-inputgroup">
                                     <InputText v-model.trim="venta.venMateriaPrima" required="true" autofocus
                                         :class="{ 'p-invalid': submitted && !venta.venMateriaPrima }"
@@ -306,7 +341,7 @@ const initFilters = () => {
 
                             <div class="field">
                                 <label for="name">Empaques</label>
-                 
+
                                 <div class="p-inputgroup">
                                     <InputText v-model.trim="venta.venEmpaques" required="true" autofocus
                                         :class="{ 'p-invalid': submitted && !venta.venEmpaques }" placeholder="Price" />
@@ -320,7 +355,7 @@ const initFilters = () => {
 
                             <div class="field">
                                 <label for="name">Observacion</label>
-                 
+
                                 <Textarea v-model.trim="venta.venObservacion" id="venObservacion" rows="2" />
 
                             </div>
