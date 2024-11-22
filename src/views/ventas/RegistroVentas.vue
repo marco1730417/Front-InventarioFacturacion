@@ -273,11 +273,9 @@ const initFilters = () => {
 
 
                     <div class="card">
-                        <h5>Venta Diaria
 
-                        </h5>
 
-                        <h5>Calendar</h5>
+                        <h5>Seleccione una fecha</h5>
                         <Calendar :showIcon="true" :showButtonBar="true" v-model="calendarValue"></Calendar>
 
                         <Button v-if="datos_ventas" label="Gastos" style="float: right" class="p-button-success mr-2"

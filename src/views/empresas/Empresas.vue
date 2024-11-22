@@ -27,8 +27,6 @@ onBeforeMount(() => {
 onMounted(() => {
 
     obtenerRegistros(url.value);
-    // Extrae los IDs de las ingestas asociadas y asígnalos a checkboxValue
-   // checkboxValue.value = datos.value.ingestas.map((ingesta) => ingesta.tipoId);
    
  
     obtenerTipoIngestas(url.value);
@@ -310,8 +308,8 @@ const initFilters = () => {
                     <div class="field">
                         <label for="name">Nombre</label>
                         <InputText id="name" v-model.trim="sucursal.sucNombre" required="true" autofocus
-                            :class="{ 'p-invalid': submitted && !empresa.sucNombre }" />
-                        <small class="p-invalid" v-if="submitted && !empresa.sucNombre">Name is required.</small>
+                            :class="{ 'p-invalid': submitted && !sucursal.sucNombre }" />
+                        <small class="p-invalid" v-if="submitted && !sucursal.sucNombre">Name is required.</small>
                     </div>
 
 
