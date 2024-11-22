@@ -48,6 +48,9 @@ const ocultarModal = () => {
     modalRegistro.value = false;
     modalSucursal.value = false;
     submitted.value = false;
+
+    sucursal.value = {};
+    empresa.value = {};
 };
 
 const guardareditarRegistro = () => {
