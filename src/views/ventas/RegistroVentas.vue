@@ -4,7 +4,7 @@ import { ref, onMounted, onBeforeMount, watch } from 'vue';
 import { useRestApi } from '@/composables/crud';
 import { format } from 'date-fns';
 
-const { obtenerRegistrosVentas, guardarDetalleVenta, obtenerIngestasEmpresa, ingestasEmpresa, obtenerRegistrosVenta, lobtenerRegistros, datos_ventas, obtenerTipoIngestas, datosIngestas, editarRegistro, datos, guardarRegistro, eliminarRegistro } = useRestApi() //Instancia composable Rest
+const { obtenerRegistrosVentas, venta_total,guardarDetalleVenta, obtenerIngestasEmpresa, ingestasEmpresa, obtenerRegistrosVenta, lobtenerRegistros, datos_ventas, obtenerTipoIngestas, datosIngestas, editarRegistro, datos, guardarRegistro, eliminarRegistro } = useRestApi() //Instancia composable Rest
 const url = ref('ventas');
 const urlsucursales = ref('sucursales');
 const modalRegistro = ref(false);
@@ -182,7 +182,7 @@ const initFilters = () => {
                                 <div class="flex justify-content-between mb-3">
                                     <div>
 
-                                        <span class="block text-500 font-medium mb-3">Mano de Obra</span>
+                                        <span class="block text-500 font-medium mb-3">Costo MO</span>
                                         <div class="text-900 font-medium text-xl">$ {{ datos.venManoObra }}</div>
                                     </div>
                                     <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
@@ -197,7 +197,7 @@ const initFilters = () => {
                             <div class="surface-card shadow-2 p-3 border-round">
                                 <div class="flex justify-content-between mb-3">
                                     <div>
-                                        <span class="block text-500 font-medium mb-3">Materia Prima</span>
+                                        <span class="block text-500 font-medium mb-3">Costo MP</span>
                                         <div class="text-900 font-medium text-xl">$ {{ datos.venMateriaPrima }}</div>
                                     </div>
                                     <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
@@ -227,8 +227,38 @@ const initFilters = () => {
                             <div class="surface-card shadow-2 p-3 border-round">
                                 <div class="flex justify-content-between mb-3">
                                     <div>
-                                        <span class="block text-500 font-medium mb-3">Costo</span>
+                                        <span class="block text-500 font-medium mb-3">Total Costo</span>
                                         <div class="text-900 font-medium text-xl">$ {{ datos.venCosto }}</div>
+                                    </div>
+                                    <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
+                                        style="width: 2.5rem; height: 2.5rem">
+                                        <i class="pi pi-dollar text-purple-500 text-xl"></i>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-6 lg:col-3">
+                            <div class="surface-card shadow-2 p-3 border-round">
+                                <div class="flex justify-content-between mb-3">
+                                    <div>
+                                        <span class="block text-500 font-medium mb-3">Ingresos Totales</span>
+                                        <div class="text-900 font-medium text-xl">$ {{ venta_total }}</div>
+                                    </div>
+                                    <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
+                                        style="width: 2.5rem; height: 2.5rem">
+                                        <i class="pi pi-dollar text-purple-500 text-xl"></i>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-6 lg:col-3">
+                            <div class="surface-card shadow-2 p-3 border-round">
+                                <div class="flex justify-content-between mb-3">
+                                    <div>
+                                        <span class="block text-500 font-medium mb-3">Utilidad</span>
+                                        <div class="text-900 font-medium text-xl">$ {{venta_total  - datos.venCosto  }}</div>
                                     </div>
                                     <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
                                         style="width: 2.5rem; height: 2.5rem">
@@ -260,10 +290,10 @@ const initFilters = () => {
                             :loading="loading2" scrollDirection="both" class="mt-3">
                             <Column field="sucursal_nombre" header="Empresa" :style="{ width: '150px' }" frozen>
                             </Column>
+                  
 
 
-
-                            <Column field="empUbicventasacion" header="Ventas" :sortable="true">
+                            <Column field="empUbicventasacion" header="Ventas" :style="{ width: '400px' }" :sortable="true">
                                 <template #body="slotProps">
                                     <span class="p-column-title">Ingestas</span>
 
@@ -287,10 +317,23 @@ const initFilters = () => {
                                             </template>
                                         </Column>
 
+                                        <Column field="total_ingesta" header="Total" :sortable="true">
+                                            <template #body="slotProps">
+                                                <span class="p-column-title">Total</span>
+                                                <span> {{ slotProps.data.total_ingesta
+                                                    }} </span>
+                                            </template>
+                                        </Column>
+
+                                        
+
 
                                     </DataTable>
 
                                 </template>
+                            </Column>
+
+                            <Column field="total_venta_diaria" header="Total">
                             </Column>
 
                             <Column header="Acciones ">

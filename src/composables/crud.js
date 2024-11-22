@@ -14,6 +14,7 @@ export function useRestApi()
   const datosReporteMarcaciones = ref([]);
   const datos_ventas = ref(null)
   const datosAgendamiento = ref([]);
+  const venta_total= ref(null);
 
   
   
@@ -48,7 +49,10 @@ export function useRestApi()
   {
     try {
       const response = await axios.get(`${url}/obtener-registros/${fecha}`)
-      datos_ventas.value = response.data;
+      datos_ventas.value = response.data.sucursales;
+      venta_total.value = response.data.total_venta_general;
+      
+      
     } catch (e) {
       error.value = e
       toast.add({ severity: 'error', summary: error.value, detail: error, life: 4000 });
@@ -312,6 +316,7 @@ export function useRestApi()
     error,
     datosId,
     datosMarcaciones,
+    venta_total,
     datosIdAuxiliar,
     obtenerRegistrosVentas,
     obtenerRegistrosVenta,
