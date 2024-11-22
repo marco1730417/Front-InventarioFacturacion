@@ -64,16 +64,7 @@ const nuevoRegistro = () => {
     submitted.value = false;
     modalRegistro.value = true;
 };
-/* const nuevoDetalleVenta = (datos) => {
 
-    sucursalId.value = datos.sucId;
-
-    
-    obtenerIngestasEmpresa(url.value, datos.empId)
-
-    submitted.value = false;
-    modalDetalleVenta.value = true;
-}; */
 
 const nuevoDetalleVenta = (datos) => {
             // Inicializa las cantidades
@@ -116,7 +107,6 @@ const guardareditarRegistro = () => {
     const formattedDate = format(calendarValue.value, "yyyy-MM-dd");
 
     submitted.value = true;
-    if (venta.value.venManoObra && venta.value.venMateriaPrima && venta.value.venEmpaques) {
         if (venta.value.venId) {
 
             editarRegistro(url.value, venta.value);
@@ -130,8 +120,6 @@ const guardareditarRegistro = () => {
             guardarRegistro(url.value, venta.value);
 
             obtenerRegistrosVenta(url.value, formattedDate);
-
-        }
 
     }
     modalRegistro.value = false;
@@ -268,6 +256,23 @@ const initFilters = () => {
 
                             </div>
                         </div>
+
+                        <div v-if="datos.venObservacion" class="col-12 md:col-6 lg:col-6">
+                            <div class="surface-card shadow-2 p-3 border-round">
+                                <div class="flex justify-content-between mb-3">
+                                    <div>
+                                        <span class="block text-500 font-medium mb-3">Observacion</span>
+                                        <div class="text-900 font-medium text-xl">{{datos.venObservacion}}</div>
+                                    </div>
+                                    <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
+                                        style="width: 2.5rem; height: 2.5rem">
+                                        <i class="pi pi-eye text-purple-500 text-xl"></i>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
                     </div>
 
 
@@ -278,7 +283,7 @@ const initFilters = () => {
                         <h5>Seleccione una fecha</h5>
                         <Calendar :showIcon="true" :showButtonBar="true" v-model="calendarValue"></Calendar>
 
-                        <Button v-if="datos_ventas" label="Gastos" style="float: right" class="p-button-success mr-2"
+                        <Button v-if="datos_ventas" label="Valores Generales" style="float: right" class="p-button-success mr-2"
                             @click="nuevoRegistro" />
 
                         <ToggleButton v-model="idFrozen" onIcon="pi pi-lock" offIcon="pi pi-lock-open"
@@ -286,19 +291,28 @@ const initFilters = () => {
 
                         <DataTable v-if="datos_ventas" :value="datos_ventas" :scrollable="true" scrollHeight="400px"
                             :loading="loading2" scrollDirection="both" class="mt-3">
-                            <Column field="sucursal_nombre" header="Empresa" :style="{ width: '150px' }" frozen>
+                            <Column field="sucursal_nombre" header="Empresa" :sortable="true" :style="{ width: '100px' }" frozen>
+                           
+                                <template #body="slotProps">
+                                    <span class="p-column-title">Empresa</span>
+                                    <span> {{ slotProps.data.empresa_nombre }} <br>
+                                        {{ slotProps.data.sucursal_nombre }}
+                                    </span>
+                                </template>
+
                             </Column>
                   
 
 
-                            <Column field="empUbicventasacion" header="Ventas" :style="{ width: '400px' }" :sortable="true">
+                            <Column field="empUbicventasacion" header="Ventas" :style="{ width: '300px' }" >
                                 <template #body="slotProps">
                                     <span class="p-column-title">Ingestas</span>
 
-                                    <DataTable :value="slotProps.data.ventas" :scrollable="true" scrollHeight="400px"
+                                    <DataTable :value="slotProps.data.ventas" :scrollable="true" 
                                         :loading="loading2" scrollDirection="both" class="mt-3">
+                                        <template #empty> Ninguna venta asociada. </template>
 
-                                        <Column field="nombre" header="Ingesta" :sortable="true">
+                                        <Column field="nombre" header="Ingesta" >
                                             <template #body="slotProps">
                                                 <span class="p-column-title">Tipo Ingesta</span>
                                                 <span v-if="slotProps.data.venId != null"> {{ slotProps.data.nombre }}
@@ -307,18 +321,25 @@ const initFilters = () => {
                                         </Column>
 
 
-                                        <Column field="ingCantidad" header="Cantidad" :sortable="true">
+                                        <Column field="ingCantidad" header="Cantidad" >
                                             <template #body="slotProps">
                                                 <span class="p-column-title">Cantidad</span>
                                                 <span v-if="slotProps.data.venId != null"> {{ slotProps.data.ingCantidad
                                                     }} </span>
                                             </template>
                                         </Column>
+                                        <Column field="valor" header="Valor" >
+                                            <template #body="slotProps">
+                                                <span class="p-column-title">Valor</span>
+                                                <span>$ {{ slotProps.data.valor
+                                                    }} </span>
+                                            </template>
+                                        </Column>
 
-                                        <Column field="total_ingesta" header="Total" :sortable="true">
+                                        <Column field="total_ingesta" header="Total" >
                                             <template #body="slotProps">
                                                 <span class="p-column-title">Total</span>
-                                                <span> {{ slotProps.data.total_ingesta
+                                                <span>$ {{ slotProps.data.total_ingesta
                                                     }} </span>
                                             </template>
                                         </Column>
@@ -332,6 +353,11 @@ const initFilters = () => {
                             </Column>
 
                             <Column field="total_venta_diaria" header="Total">
+                                <template #body="slotProps">
+                                    <span class="p-column-title">Total</span>
+                                    <span>$ {{ slotProps.data.total_venta_diaria
+                                        }} </span>
+                                </template>
                             </Column>
 
                             <Column header="Acciones ">
@@ -354,8 +380,12 @@ const initFilters = () => {
                                 <label for="name">Mano de Obra</label>
 
                                 <div class="p-inputgroup">
-                                    <InputText v-model.trim="venta.venManoObra" required="true" autofocus
-                                        :class="{ 'p-invalid': submitted && !venta.venManoObra }" placeholder="Price" />
+                                  <!--   <InputText v-model.trim="venta.venManoObra" required="true" autofocus
+                                        :class="{ 'p-invalid': submitted && !venta.venManoObra }" placeholder="Price" /> -->
+
+                                        <InputNumber  v-model.trim="venta.venManoObra" required="true" autofocus
+                                        placeholder="Price" class="w-full" :min="0" />
+
                                     <span class="p-inputgroup-addon">$</span>
                                     <span class="p-inputgroup-addon">.00</span>
                                 </div>
@@ -369,9 +399,13 @@ const initFilters = () => {
                                 <label for="name">Materia Prima</label>
 
                                 <div class="p-inputgroup">
-                                    <InputText v-model.trim="venta.venMateriaPrima" required="true" autofocus
+                                <!--     <InputText v-model.trim="venta.venMateriaPrima" required="true" autofocus
                                         :class="{ 'p-invalid': submitted && !venta.venMateriaPrima }"
-                                        placeholder="Price" />
+                                        placeholder="Price" /> -->
+
+                                        <InputNumber  v-model.trim="venta.venMateriaPrima" required="true" autofocus
+                                        placeholder="Price" class="w-full" :min="0" />
+
                                     <span class="p-inputgroup-addon">$</span>
                                     <span class="p-inputgroup-addon">.00</span>
                                 </div>
@@ -384,8 +418,12 @@ const initFilters = () => {
                                 <label for="name">Empaques</label>
 
                                 <div class="p-inputgroup">
-                                    <InputText v-model.trim="venta.venEmpaques" required="true" autofocus
-                                        :class="{ 'p-invalid': submitted && !venta.venEmpaques }" placeholder="Price" />
+                         <!--            <InputText v-model.trim="venta.venEmpaques" required="true" autofocus
+                                        :class="{ 'p-invalid': submitted && !venta.venEmpaques }" placeholder="Price" /> -->
+
+                                        <InputNumber  v-model.trim="venta.venEmpaques" required="true" autofocus
+                                        placeholder="Price" class="w-full" :min="0" />
+
                                     <span class="p-inputgroup-addon">$</span>
                                     <span class="p-inputgroup-addon">.00</span>
                                 </div>
@@ -410,7 +448,7 @@ const initFilters = () => {
                         </Dialog>
 
                         <!-- DETALLE VENTA -->
-                        <Dialog v-model:visible="modalDetalleVenta" :style="{ width: '500px' }" header="Generales"
+                        <Dialog v-model:visible="modalDetalleVenta" :style="{ width: '600px' }" header="Ingreso de Ingestas"
                             :modal="true" class="p-fluid">
                             <div class="field">
 
@@ -419,8 +457,9 @@ const initFilters = () => {
                                     <div v-for="(item, index) in ingestasEmpresa" :key="index" class="col-12 md:col-6">
                                         <div class="field">
                                             <!-- Nombre de la ingesta -->
-                                            <label :for="`inputCantidad${index}`" class="block">{{ item.nombre
-                                                }}</label>
+                                            <label :for="`inputCantidad${index}`" class="block">
+                                               <strong> {{ item.nombre
+                                            }} </strong></label> <br>
                                             <!-- Input para la cantidad -->
                                             <InputNumber v-model="cantidades[item.tipoId]" :id="`inputCantidad${index}`"
                                                 :placeholder="`Cantidad de ${item.nombre}`" class="w-full" :min="0" />

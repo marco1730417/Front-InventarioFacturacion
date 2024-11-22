@@ -158,6 +158,7 @@ const initFilters = () => {
                 </Toolbar>
 
                 <DataTable :value="datos" v-model:expandedRows="expandedRows" dataKey="empId" responsiveLayout="scroll">
+                    <template #empty> Ninguna empresa creada. </template>
 
                     <Column :expander="true" headerStyle="width: 3rem" />
                     <Column field="name" header="EMPRESA" :sortable="true">
@@ -313,13 +314,13 @@ const initFilters = () => {
                     </div>
 
 
-                    <div class="field">
+                  <!--   <div class="field">
                         <label for="name">Descripcion</label>
                         <InputText id="name" v-model.trim="sucursal.sucDescripcion" required="true" autofocus
                             :class="{ 'p-invalid': submitted && !sucursal.sucDescripcion }" />
                         <small class="p-invalid" v-if="submitted && !sucursal.sucDescripcion">Numero de cedula es
                             requerido.</small>
-                    </div>
+                    </div> -->
 
                     <div class="field">
                         <label for="name">Ubicacion</label>
@@ -334,10 +335,14 @@ const initFilters = () => {
                     <div class="field">
                         <label for="name">Correo</label>
                         <InputText id="name" v-model.trim="sucursal.sucCorreo" required="true" autofocus
-                            :class="{ 'p-invalid': submitted && !sucursal.sucCorreo }" />
-                        <small class="p-invalid" v-if="submitted && !sucursal.sucCorreo">Correo es requerido.</small>
+                             />
                     </div>
 
+                    <div class="field">
+                        <label for="name">Telefono</label>
+                        <InputText id="name" v-model.trim="sucursal.sucTelefono"  autofocus
+                            />
+                    </div>
 
 
                     <template #footer>
