@@ -35,6 +35,13 @@ const router = createRouter({
                     component: () => import('@/views/facturacion/Clientes.vue')
                 }, */
                 {
+                    path: '/facturacion/parametros',
+                    name: 'parametros',
+                    
+                    meta: { authorize: Role.SuperAdministrador},
+                    component: () => import('@/views/parametros/Parametros.vue')
+                },
+                {
                     path: '/facturacion/usuarios',
                     name: 'tableusuarios',
                     

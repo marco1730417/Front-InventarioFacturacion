@@ -31,6 +31,8 @@ const model = ref([
      
         { label: 'Agendamiento', icon: 'pi pi-fw pi-calendar', to: '/facturacion/agendamiento' },
      
+        { label: 'Parametros', icon: 'pi pi-fw pi-cog', to: '/facturacion/parametros' },
+     
     
 /*         { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
             { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/uikit/input' },
