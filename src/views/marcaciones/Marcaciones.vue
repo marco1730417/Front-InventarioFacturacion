@@ -94,7 +94,7 @@ const initFilters = () => {
             <div class="grid p-fluid">
         <div class="col">
             <div class="card">
-                <h5>Consulta de Asistencia</h5>
+                <h5>Control de Asistencia</h5>
                 <div class="p-fluid grid">
                     <div class="col-9 md:col-4">
                         <div class="field">
