@@ -6,17 +6,15 @@ import { useRestApi } from '@/composables/crud';
 const { obtenerRegistros,obtenerTipoIngestas,datosIngestas, editarRegistro, datos, guardarRegistro, eliminarRegistro } = useRestApi() //Instancia composable Rest
 const url = ref('empresas');
 const urlsucursales = ref('sucursales');
-const modalRegistro = ref(false);
+const modalEmpresa = ref(false);
 const modalSucursal = ref(false);
 const modalBorrarRegistro = ref(false);
 const empresa = ref({});
 const empresaId = ref();
 const sucursal = ref({})
-
 const checkboxValue = ref([]);
 const dt = ref(null);
 const filters = ref({});
-const radioValue = ref(null);
 const submitted = ref(false);
 const selectedIds=ref([])
 const expandedRows = ref([]);
@@ -36,7 +34,7 @@ onMounted(() => {
 const nuevoRegistro = () => {
     empresa.value = {};
     submitted.value = false;
-    modalRegistro.value = true;
+    modalEmpresa.value = true;
 };
 const crearSucursal = (empId) => {
     modalSucursal.value = true;
@@ -45,7 +43,7 @@ const crearSucursal = (empId) => {
 };
 
 const ocultarModal = () => {
-    modalRegistro.value = false;
+    modalEmpresa.value = false;
     modalSucursal.value = false;
     submitted.value = false;
 
@@ -56,10 +54,10 @@ const ocultarModal = () => {
 const guardareditarRegistro = () => {
 
     submitted.value = true;
-    if (empresa.value.empCorreo && empresa.value.empNombre.trim() ) {
+    
+    if (empresa.value.empNombre.trim() && selectedIds.value.length>0  ) {
         if (empresa.value.empId) {
-            //Edicion
-
+            
             empresa.value.ingestas= selectedIds.value
 
             editarRegistro(url.value, empresa.value);
@@ -75,7 +73,7 @@ const guardareditarRegistro = () => {
             obtenerRegistros(url.value);
 
         }
-        modalRegistro.value = false;
+        modalEmpresa.value = false;
         empresa.value = {};
     }
 };
@@ -83,7 +81,7 @@ const guardareditarRegistroSucursal = () => {
 
 
     submitted.value = true;
-    if (sucursal.value) {
+    if (sucursal.value.sucNombre.trim()) {
         if (sucursal.value.sucId) {
             //Edicion
             editarRegistro(urlsucursales.value, sucursal.value);
@@ -109,7 +107,7 @@ const edicionRegistro = (edicionRegistro) => {
     
     selectedIds.value = checkboxValue.value.map(item => item.tipoId);
 
-    modalRegistro.value = true;
+    modalEmpresa.value = true;
 };
 const edicionRegistroSucursal = (edicionRegistroSucursal) => {
     sucursal.value = { ...edicionRegistroSucursal };
@@ -235,10 +233,10 @@ const initFilters = () => {
 
                 <!-- EMPRESAS -->
 
-                <Dialog v-model:visible="modalRegistro" :style="{ width: '750px' }" header="Nueva Empresa"
+                <Dialog v-model:visible="modalEmpresa" :style="{ width: '750px' }" header="Nueva Empresa"
                     :modal="true" class="p-fluid">
                     <div class="field">
-                        <label for="name">Nombre</label>
+                        <label for="name">Nombre <span style="color: red;">*</span> </label>
                   
                    
 
@@ -256,8 +254,7 @@ const initFilters = () => {
                     <div class="field">
                         <label for="name">Correo</label>
                         <InputText id="name" v-model.trim="empresa.empCorreo" required="true" autofocus
-                            :class="{ 'p-invalid': submitted && !empresa.empCorreo }" />
-                        <small class="p-invalid" v-if="submitted && !empresa.empCorreo">Correo es requerido.</small>
+                             />
                     </div>
 
                     
@@ -266,7 +263,7 @@ const initFilters = () => {
                         <InputText id="name" v-model.trim="empresa.empTelefono" />
                     </div>
 
-                    <h5>Tipos de Ingesta</h5>
+                    <h5>Tipos de Ingesta <span style="color: red;">*</span></h5>
 
               
                    <div class="grid">
@@ -310,27 +307,19 @@ const initFilters = () => {
                 <Dialog v-model:visible="modalSucursal" :style="{ width: '750px' }" header="Agregar Sucursal"
                     :modal="true" class="p-fluid">
                     <div class="field">
-                        <label for="name">Nombre</label>
+                        <label for="name">Nombre <span style="color: red;">*</span></label>
                         <InputText id="name" v-model.trim="sucursal.sucNombre" required="true" autofocus
                             :class="{ 'p-invalid': submitted && !sucursal.sucNombre }" />
-                        <small class="p-invalid" v-if="submitted && !sucursal.sucNombre">Name is required.</small>
+                        <small class="p-invalid" v-if="submitted && !sucursal.sucNombre">Nombre es requerido.</small>
                     </div>
 
 
-                  <!--   <div class="field">
-                        <label for="name">Descripcion</label>
-                        <InputText id="name" v-model.trim="sucursal.sucDescripcion" required="true" autofocus
-                            :class="{ 'p-invalid': submitted && !sucursal.sucDescripcion }" />
-                        <small class="p-invalid" v-if="submitted && !sucursal.sucDescripcion">Numero de cedula es
-                            requerido.</small>
-                    </div> -->
+         
 
                     <div class="field">
                         <label for="name">Ubicacion</label>
-                        <InputText id="name" v-model.trim="sucursal.sucUbicacion" required="true" autofocus
-                            :class="{ 'p-invalid': submitted && !sucursal.sucUbicacion }" />
-                        <small class="p-invalid" v-if="submitted && !sucursal.sucUbicacion">Ubicacion es
-                            requerido.</small>
+                        <InputText id="name" v-model.trim="sucursal.sucUbicacion" required="true" autofocus/>
+                        
                     </div>
 
 
