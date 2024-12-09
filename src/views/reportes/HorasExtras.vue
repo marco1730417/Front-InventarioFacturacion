@@ -133,7 +133,7 @@ const initFilters = () => {
                                         <Button label="Consultar" icon="pi pi-calculator" class="p-button-success"
                                             @click="generarReporte" /> <br><br>
                                             <div>
-                                                <Button  :label="sumaValorTotal" icon="pi pi-dollar" class="p-button-warning" badgeClass="p-badge-danger"></Button>
+                                                <Button  :label="sumaValorTotal.toFixed(2)" icon="pi pi-dollar" class="p-button-warning" badgeClass="p-badge-danger"></Button>
               
                                             </div>
                                             
