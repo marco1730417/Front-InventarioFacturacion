@@ -246,7 +246,7 @@ const initFilters = () => {
                                 <div class="flex justify-content-between mb-3">
                                     <div>
                                         <span class="block text-500 font-medium mb-3">Utilidad</span>
-                                        <div class="text-900 font-medium text-xl">$ {{venta_total  - datos.venCosto  }}</div>
+                                        <div class="text-900 font-medium text-xl">$ {{ (venta_total  - datos.venCosto).toFixed(2)  }}</div>
                                     </div>
                                     <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
                                         style="width: 2.5rem; height: 2.5rem">

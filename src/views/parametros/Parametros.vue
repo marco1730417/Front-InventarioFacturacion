@@ -167,9 +167,14 @@ const initFilters = () => {
                     </div>
                 
                     <div class="field">
-                        <label for="name">Descripción</label>
-                        <InputText id="name" v-model.trim="parametro.descripcion" required="true" autofocus :class="{ 'p-invalid': submitted && !parametro.descripcion }" />
+                        <label for="name">Tipo</label>
+                    
+                        <Dropdown :options="datos" optionGroupLabel="descripcion" v-model="parametro.descripcion" optionValue="descripcion" optionLabel="descripcion" placeholder="Select" 
+                        
+                        
+                        />
                         <small class="p-invalid" v-if="submitted && !parametro.descripcion">descripcion es requerido.</small>
+                    
                     </div>
                 
                     <div class="field">
