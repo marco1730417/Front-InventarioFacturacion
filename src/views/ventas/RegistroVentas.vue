@@ -57,7 +57,6 @@ const nuevoRegistro = () => {
         submitted.value = false;
         modalRegistro.value = true;
     } else {
-        console.error("Datos no definidos. Verifica el origen de datos.");
         venta.value = {}
     }
 
@@ -102,32 +101,31 @@ const ocultarModal = () => {
     cantidades.value = {}
 };
 
-const guardareditarRegistro = () => {
+const guardareditarRegistro = async () => {
 
     const formattedDate = format(calendarValue.value, "yyyy-MM-dd");
 
     submitted.value = true;
         if (venta.value.venId) {
 
-            editarRegistro(url.value, venta.value);
+         await   editarRegistro(url.value, venta.value);
 
-            obtenerRegistrosVenta(url.value, formattedDate);
 
         } else {
 
             venta.value.venFecha = formattedDate
             //Creacion
-            guardarRegistro(url.value, venta.value);
+            await  guardarRegistro(url.value, venta.value);
 
-            obtenerRegistrosVenta(url.value, formattedDate);
 
     }
+    obtenerRegistrosVenta(url.value, formattedDate);
     modalRegistro.value = false;
     venta.value = {};
 
 };
 
-const guardarDetalle = () => {
+const guardarDetalle = async () => {
     const formattedDate = format(calendarValue.value, "yyyy-MM-dd");
 
     const data = {
@@ -136,7 +134,7 @@ const guardarDetalle = () => {
         fecha: formattedDate
     }
 
-    guardarDetalleVenta(url.value, data)
+   await guardarDetalleVenta(url.value, data)
 
     submitted.value = true;
     modalDetalleVenta.value = false;
