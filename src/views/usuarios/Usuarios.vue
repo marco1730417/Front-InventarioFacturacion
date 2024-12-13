@@ -169,7 +169,7 @@ const initFilters = () => {
                          <span v-if="slotProps.data.perfil == 2">Estándar</span>   
                         </template>
                     </Column>
-                    <Column field="sueldo" header="HORAS" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                    <!-- <Column field="sueldo" header="HORAS" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">HORAS</span>
                             {{ slotProps.data.numero_horas_laborables }}
@@ -187,7 +187,14 @@ const initFilters = () => {
                             {{ slotProps.data.hora_salida }}
                         </template>
                     </Column>
-                 
+                  -->
+
+                  <Column field="ruc" header="HORARIO" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                    <template #body="slotProps">
+                        <span class="p-column-title">HORARIO</span>
+                        {{ slotProps.data.hora_entrada }} -  {{ slotProps.data.hora_salida }} /  {{ slotProps.data.numero_horas_laborables }} Hrs
+                    </template>
+                </Column>
                                    
                     <Column headerStyle="min-width:10rem;" header="ACCIONES ">
                         <template #body="slotProps">
