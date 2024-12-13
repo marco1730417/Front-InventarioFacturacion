@@ -178,22 +178,31 @@ const initFilters = () => {
                             {{ slotProps.data.hora_entrada }} - {{ slotProps.data.hora_salida }}
                         </template>
                     </Column>
-                    <Column field="ruc" header="HORARIO" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                 <!--    <Column field="ruc" header="HORARIO" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">HORARIO</span>
                             {{ slotProps.data.horario_establecido }}
+                        </template>
+                    </Column>
+ -->
+                    <Column field="ruc" header="HORARIO" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                        <template #body="slotProps">
+                            <span class="p-column-title">HORARIO</span>
+                            {{ slotProps.data.ingreso }} -  {{ slotProps.data.salida }} /  {{ slotProps.data.horario_establecido }} Hrs
+                        </template>
+                    </Column>
+                    
+
+                    <Column field="ruc" header="TIPO DIA" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                        <template #body="slotProps">
+                            <span class="p-column-title">TIPO DIA</span>
+                            {{ slotProps.data.tipo_dia }}
                         </template>
                     </Column>
                     <Column field="ruc" header="V/H" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">VALOR HORA</span>
                             {{ slotProps.data.valor_hora }}
-                        </template>
-                    </Column>
-                    <Column field="ruc" header="TIPO DIA" :sortable="true" headerStyle="width:14%; min-width:10rem;">
-                        <template #body="slotProps">
-                            <span class="p-column-title">TIPO DIA</span>
-                            {{ slotProps.data.tipo_dia }}
                         </template>
                     </Column>
                     <Column field="direccion" header="HORAS EXTRAS" :sortable="true"

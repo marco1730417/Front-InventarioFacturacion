@@ -37,7 +37,7 @@ const ocultarModal = () => {
 
 const guardareditarRegistro = () => {
     submitted.value = true;
-    if (usuario.value.name && usuario.value.identificacion ) {
+    if (usuario.value.name && usuario.value.identificacion && usuario.value.hora_entrada && usuario.value.hora_salida ) {
         if (usuario.value.id) {
             //Edicion
             editarRegistro(url.value,usuario.value);
@@ -175,6 +175,18 @@ const initFilters = () => {
                             {{ slotProps.data.numero_horas_laborables }}
                         </template>
                     </Column>
+                    <Column field="hora_entrada" header="INGRESO" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                        <template #body="slotProps">
+                            <span class="p-column-title">INGRESO</span>
+                            {{ slotProps.data.hora_entrada }}
+                        </template>
+                    </Column>
+                    <Column field="hora_salida" header="SALIDA" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                        <template #body="slotProps">
+                            <span class="p-column-title">SALIDA</span>
+                            {{ slotProps.data.hora_salida }}
+                        </template>
+                    </Column>
                  
                                    
                     <Column headerStyle="min-width:10rem;" header="ACCIONES ">
@@ -213,13 +225,25 @@ const initFilters = () => {
                         <label for="description">Cargo</label>
                         <Textarea id="description" v-model="usuario.cargo" required="true" rows="3" cols="20" />
                     </div> -->
-                    <div class="field">
+                 <!--    <div class="field">
                         <label for="description">Número Horas Laborables (Escribir en formato: 08:00:00)</label>
-                    <!--     <InputNumber  id="name" v-model.trim="usuario.numero_horas_laborables"  required="true" autofocus />
-                     -->    <InputText id="description" v-model="usuario.numero_horas_laborables" required="true" />
+                  <InputText id="description" v-model="usuario.numero_horas_laborables" required="true" />
                     
+                    </div> -->
+       
+                    <div class="field">
+                        <label for="description">Hora Entrada</label>
+                  <InputText id="description" type="time" v-model="usuario.hora_entrada" required="true" autofocus :class="{ 'p-invalid': submitted && !usuario.hora_entrada }"/>
+                  <small class="p-invalid" v-if="submitted && !usuario.hora_entrada">Hora de entrada es requerido.</small>
+                 
                     </div>
        
+                    <div class="field">
+                        <label for="description">Hora Salida</label>
+                  <InputText id="description" type="time" v-model="usuario.hora_salida" required="true"  autofocus :class="{ 'p-invalid': submitted && !usuario.hora_salida }"/>
+                  <small class="p-invalid" v-if="submitted && !usuario.hora_salida">Hora de salida es requerido.</small>
+                 
+                    </div>
 
 
                 
