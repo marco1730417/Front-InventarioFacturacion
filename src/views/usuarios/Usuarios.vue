@@ -35,23 +35,23 @@ const ocultarModal = () => {
     submitted.value = false;
 };
 
-const guardareditarRegistro = () => {
+const  guardareditarRegistro = async  () => {
     submitted.value = true;
     if (usuario.value.name && usuario.value.identificacion && usuario.value.hora_entrada && usuario.value.hora_salida ) {
         if (usuario.value.id) {
             //Edicion
-            editarRegistro(url.value,usuario.value);
-    
-            obtenerRegistros(url.value);    
+            await    editarRegistro(url.value,usuario.value);
+     
             
         } else {
 
             //Creacion
-            guardarRegistro(url.value,usuario.value);
-       
-            obtenerRegistros(url.value);    
+            await   guardarRegistro(url.value,usuario.value);
             
         }
+        
+        await obtenerRegistros(url.value); 
+
         modalRegistro.value = false;
         usuario.value = {};
     }
