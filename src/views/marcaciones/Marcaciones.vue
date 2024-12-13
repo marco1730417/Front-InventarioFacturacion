@@ -33,26 +33,26 @@ onMounted(() => {
 });
 
 
-const guardarRegistrodeEntrada = () => {
+const guardarRegistrodeEntrada = async () => {
 
     //Creacion
-    guardarRegistroEntrada(url.value, marcacion.value);
+ await   guardarRegistroEntrada(url.value, marcacion.value);
     obtenerRegistrosMarcaciones(url.value, dataenviar.value);
 
 };
 
 
-const obtenerRegistrosdeMarcaciones = () => {
+const obtenerRegistrosdeMarcaciones =  () => {
   
 
     obtenerRegistrosMarcaciones(url.value, dataenviar.value);
 
 };
 
-const guardarRegistrodeSalida = () => {
+const guardarRegistrodeSalida = async () => {
 
     //Creacion
-    guardarRegistroSalida(url.value, marcacion.value);
+   await guardarRegistroSalida(url.value, marcacion.value);
 
     obtenerRegistrosMarcaciones(url.value, dataenviar.value);
 
