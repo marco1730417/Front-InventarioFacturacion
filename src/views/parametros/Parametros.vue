@@ -35,23 +35,22 @@ const ocultarModal = () => {
     submitted.value = false;
 };
 
-const guardareditarRegistro = () => {
+const guardareditarRegistro = async () => {
     submitted.value = true;
     if (parametro.value.nombre && parametro.value.valor ) {
         if (parametro.value.id) {
             //Edicion
-            editarRegistro(url.value,parametro.value);
+          await  editarRegistro(url.value,parametro.value);
     
-            obtenerRegistros(url.value);    
-            
+             
         } else {
 
             //Creacion
-            guardarRegistro(url.value,parametro.value);
-       
-            obtenerRegistros(url.value);    
+            await  guardarRegistro(url.value,parametro.value);
+        
             
         }
+        obtenerRegistros(url.value);   
         modalRegistro.value = false;
         parametro.value = {};
     }
@@ -68,9 +67,9 @@ const confirmarEliminarRegistro = (edicionRegistro) => {
     modalBorrarRegistro.value = true;
 };
 
-const deleteRegistro = (id) => {
+const deleteRegistro = async (id) => {
 
-    eliminarRegistro(url.value,id);
+  await  eliminarRegistro(url.value,id);
     
     obtenerRegistros(url.value);   
 
