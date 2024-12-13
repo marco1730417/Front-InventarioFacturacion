@@ -68,11 +68,16 @@ const confirmarEliminarRegistro = (edicionRegistro) => {
     modalBorrarRegistro.value = true;
 };
 
-const deleteClient = (id) => {
-
-    eliminarRegistro(url.value,id);
-    
-    obtenerRegistros(url.value);   
+const deleteClient = async (id) => {
+    try {
+        // Esperar a que se elimine el registro
+        await eliminarRegistro(url.value, id); 
+        
+        // Una vez que la eliminación se complete, obtener los registros actualizados
+        await obtenerRegistros(url.value); 
+    } catch (error) {
+        console.error('Error al eliminar el registro:', error);
+    }
 };
 
 

@@ -51,7 +51,7 @@ const ocultarModal = () => {
     empresa.value = {};
 };
 
-const guardareditarRegistro = () => {
+const guardareditarRegistro = async() => {
 
     submitted.value = true;
     
@@ -60,40 +60,40 @@ const guardareditarRegistro = () => {
             
             empresa.value.ingestas= selectedIds.value
 
-            editarRegistro(url.value, empresa.value);
+         await   editarRegistro(url.value, empresa.value);
 
-            obtenerRegistros(url.value);
 
         } else {
 
             empresa.value.ingestas= selectedIds.value
             //Creacion
-            guardarRegistro(url.value, empresa.value);
+            await  guardarRegistro(url.value, empresa.value);
 
-            obtenerRegistros(url.value);
+
 
         }
+        obtenerRegistros(url.value);
         modalEmpresa.value = false;
         empresa.value = {};
     }
 };
-const guardareditarRegistroSucursal = () => {
+const guardareditarRegistroSucursal = async () => {
 
 
     submitted.value = true;
     if (sucursal.value.sucNombre.trim()) {
         if (sucursal.value.sucId) {
             //Edicion
-            editarRegistro(urlsucursales.value, sucursal.value);
-            obtenerRegistros(url.value);
+            await  editarRegistro(urlsucursales.value, sucursal.value);
 
         } else {
 
             //Creacion
-            guardarRegistro(urlsucursales.value, sucursal.value);
-            obtenerRegistros(url.value);
+            await  guardarRegistro(urlsucursales.value, sucursal.value);
+            
 
         }
+        obtenerRegistros(url.value);
         modalSucursal.value = false;
         sucursal.value = {};
     }
@@ -122,9 +122,9 @@ const confirmarEliminarRegistro = (edicionRegistro) => {
     modalBorrarRegistro.value = true;
 };
 
-const deleteClient = (id) => {
+const deleteClient = async (id) => {
 
-    eliminarRegistro(url.value, id);
+    await eliminarRegistro(url.value, id);
 
     obtenerRegistros(url.value);
 };
